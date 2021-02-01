@@ -1,6 +1,8 @@
 const { MongoClient } = require("mongodb");
+const fs = require("fs")
 
-const uri = " "; //Mettre l'uri ici !!!
+//Add the URI in a new mongodb.config file
+const uri = fs.readFileSync("./mongodb.config", "utf-8")
 const client = new MongoClient(uri);
 
 async function run() {

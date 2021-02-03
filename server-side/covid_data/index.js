@@ -1,25 +1,43 @@
-const {Router} = require('express');
+const { Router } = require('express');
+const MongoClient = require('mongodb').MongoClient;
+const fs = require("fs");
 const RestOperator = require('../utils/rest-operator')
 
-//Configuration du RestOperator
-const rest_operator = new RestOperator('covid_data', 'covid_data/covid_data.json');
+/**
+ * Connexion to mongoDB : 
+ * dont forget to create a mongodb.config at the root project and write in it the url
+ */
+const url = fs.readFileSync("./mongodb.config", "utf-8")
+const dbName = 'covidDB';
+let db
+ 
+MongoClient.connect(url, { useUnifiedTopology: true }, function(err, client) {
+  console.log("Connected to mongoDB server");
+  db = client.db(dbName);
+});
+
+/**
+ * Router setup
+ */
 
 const router = new Router();
+const paths = ['/heb/dep', '/heb/fra', '/heb/reg', '/quot/dep', '/quot/fra', '/quot/reg']
 router.get('/', (req, res) => {
-    res.status(200).json(rest_operator.get());
+    res.status(200).json([]);
 });
-router.get('/:listId', (req, res) => {
-    try {
-        const list = rest_operator.getById(req.params.listId);
-        res.status(200).json(list);
-    } catch (e) {
-        if(e.name === 'ItemNotFoundError') {
-            res.status(404).end();
-        } else {
-            res.status(500).json(e);
-        }
-    }
+
+paths.forEach(path => {
+    router.get(path, (req, res) => {
+        db.collection(path.replace("/", "").replace("/", "-")).find({}).toArray()
+            .then(docs => res.status(200).json(docs))
+            .catch(err => res.status(500).json(err));
+    });
 });
+
+/*
+
+Bon tuto => https://practicalprogramming.fr/api-node-js-mongodb/
+
 router.post('/', (req, res) => {
     try {
         const list = rest_operator.post(req.body);
@@ -52,4 +70,5 @@ router.delete('/:listId', (req, res) => {
         }
     }
 });
+*/
 module.exports = router;

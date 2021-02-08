@@ -1,11 +1,12 @@
+const compareKeywords = [
+    { key: ">=", value: "$gte" },
+    { key: "<=", value: "$lte" },
+    { key: ">", value: "$gt" },
+    { key: "<", value: "$lt" },
+    { key: "!", value: "$ne" }
+];
+
 const compareFilter = (key, value) => {
-    const compareKeywords = [
-        { key: ">=", value: "$gte" },
-        { key: "<=", value: "$lte" },
-        { key: ">", value: "$gt" },
-        { key: "<", value: "$lt" },
-        { key: "!", value: "$ne" },
-    ]
     for (let i = 0; i < compareKeywords.length; i++) {
         const keyword = compareKeywords[i];
         if (value.startsWith(keyword.key)) {
@@ -28,14 +29,13 @@ const filtering = (filters) => {
         } else if(value == parseFloat(value)) {
             results[key] = parseFloat(value)
         } else  {
-            if (value.startsWith(">") || value.startsWith("<")) {
+            if (compareKeywords.map(kw => kw.key).find(k => value.startsWith(k) != undefined)) {
                 results[key] = compareFilter(key, value)
             } else {
                 results[key] = value
             }
         }
     }
-    console.log(results)
     return results
 }
 

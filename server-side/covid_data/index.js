@@ -2,6 +2,7 @@ const { Router } = require('express');
 const MongoClient = require('mongodb').MongoClient;
 const fs = require("fs");
 const RestOperator = require('../utils/rest-operator')
+const filtering = require("./filtering")
 
 /**
  * Connexion to mongoDB : 
@@ -28,7 +29,7 @@ router.get('/', (req, res) => {
 
 paths.forEach(path => {
     router.get(path, (req, res) => {
-        db.collection(path.replace("/", "").replace("/", "-")).find({}).toArray()
+        db.collection(path.replace("/", "").replace("/", "-")).find(filtering(req.query)).toArray()
             .then(docs => res.status(200).json(docs))
             .catch(err => res.status(500).json(err));
     });

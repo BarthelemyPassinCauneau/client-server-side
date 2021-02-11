@@ -1,5 +1,7 @@
 //https://coronavirusapi-france.now.sh/FranceLiveGlobalData
-/*
-export const RealTimeData = () => (
+
+const RealTimeData = ({data}) => (
+    <p>{data}</p>
 );
-*/
+
+export default RealTimeData;

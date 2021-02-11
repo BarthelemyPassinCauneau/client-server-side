@@ -1,16 +1,19 @@
 import logo from './logo.svg';
 import './App.css';
-import {GraphColumn} from './GraphColumn.js';
+import {GraphColumn} from './components/GraphColumn.js';
+import {GraphCurve} from './components/GraphCurve.js';
 import { BrowserRouter as Router, Switch, Route, Link } from "react-router-dom"
 
 function App() {
   return (
     <Router>
       <div className="App">
-        <header className="App-header">
+        <header>
           <p>
-            Coucou
+            Best App
           </p>
+        </header>
+
           <ul>
             <li>
               <Link to="/">Home</Link>
@@ -22,11 +25,10 @@ function App() {
           
           <Switch>
             <Route path="/graph">
-              <GraphColumn></GraphColumn>
+                <GraphColumn></GraphColumn>
+                <GraphCurve></GraphCurve>
             </Route>
           </Switch>
-
-        </header>
       </div>
     </Router>
   );

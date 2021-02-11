@@ -35,33 +35,31 @@ class App extends Component {
     return (
       <Router>
         <div className="App">
-          <header className="App-header">
-            <p>
-              Coucou
-            </p>
-            <ul>
-              <li>
-                <Link to="/">Home</Link>
-              </li>
-              <li>
-                <Link to="/graph">Graph</Link>
-              </li>
-              <li>
-                <Link to="/map">Map</Link>
-              </li>
-            </ul>
+          <p>
+            Coucou
+          </p>
+          <ul>
+            <li>
+              <Link to="/">Home</Link>
+            </li>
+            <li>
+              <Link to="/graph">Graph</Link>
+            </li>
+            <li>
+              <Link to="/map">Map</Link>
+            </li>
+          </ul>
 
-            <Switch>
-              <Route path="/graph">
-                <GraphColumn></GraphColumn>
-                <GraphCurve></GraphCurve>
-              </Route>
-              <Route path="/map">
-                <Map></Map>
-              </Route>
-            </Switch>
-            <RealTimeData data={this.state.realtimedata}></RealTimeData>
-          </header>
+          <Switch>
+            <Route path="/graph">
+              <GraphColumn pInput1={1} pInput2={2}></GraphColumn>
+              <GraphCurve></GraphCurve>
+            </Route>
+            <Route path="/map">
+              <Map></Map>
+            </Route>
+          </Switch>
+          <RealTimeData data={this.state.realtimedata}></RealTimeData>
         </div>
       </Router>
     );

@@ -32,14 +32,15 @@ export class GraphColumn extends Component {
 					{ x: 90, y: 54 },
 					{ x: 100, y: 60 },
 					{ x: 110, y: 21 },
-					{ x: 120, y: 49 },
-					{ x: 130, y: 36 }
+					{ x: 600, y: 490 },
+					{ x: 1300, y: 36 }
 				]
 			}]
 		}
 		
 		return (
 		<div>
+			<p>Data from App is : {this.props.pInput1}, {this.props.pInput2}</p>
 			<CanvasJSChart options = {options} 
 				/* onRef={ref => this.chart = ref} */
 			/>

@@ -35,9 +35,9 @@ class App extends Component {
     return (
       <Router>
         <div className="App">
-          <p>
-            Coucou
-          </p>
+          <h1>
+            Best app !
+          </h1>
           <ul>
             <li>
               <Link to="/">Home</Link>

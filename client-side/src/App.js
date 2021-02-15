@@ -12,13 +12,19 @@ class App extends Component {
 
   constructor(props) {
     super(props);
-    this.state = { back: "", realtimedata: [{key: ""}]};
+    this.state = { back: "", realtimedata: [{key: ""}], zero6 : [{key: 0}]};
   }
-  //http://localhost:8080/covid_data/heb/dep?week=2020-S24&dep=06
+  //
   callServer() {
     fetch("http://localhost:8080")
       .then(res => res.text())
       .then(res => this.setState({ back: res }));
+  }
+
+  callServer06() {
+    fetch("http://localhost:8080/covid_data/heb/dep?week=2020-S24&dep=06")
+    .then(res => res.json())
+    .then(res => this.setState({ zero6: res}));
   }   
 
   callRealTimeData() {
@@ -29,6 +35,7 @@ class App extends Component {
 
   componentWillMount() {
     this.callServer();
+    this.callServer06();
     this.callRealTimeData();
   }
 
@@ -53,7 +60,7 @@ class App extends Component {
 
           <Switch>
             <Route path="/graph">
-              <GraphColumn pInput2={2}></GraphColumn>
+              <GraphColumn input={this.state.zero6}></GraphColumn>
               <GraphCurve></GraphCurve>
               <Grid data={this.state.realtimedata}></Grid>
             </Route>

@@ -5,42 +5,60 @@ var CanvasJSChart = CanvasJSReact.CanvasJSChart;
  
 export class GraphColumn extends Component {	
 	render() {
-		const options = {
-			animationEnabled: true,
-			exportEnabled: true,
-			theme: "light2", //"light1", "dark1", "dark2"
-			title:{
-				text: "Simple Column Chart with Index Labels"
-			},
-			axisY: {
-				includeZero: true
-			},
-			data: [{
-				type: "column", //change type to bar, line, area, pie, etc
-				//indexLabel: "{y}", //Shows y value on all Data Points
-				indexLabelFontColor: "#5A5757",
-				indexLabelPlacement: "outside",
-				dataPoints: [
-					{ x: 10, y: 71 },
-					{ x: 20, y: 55 },
-					{ x: 30, y: 50 },
-					{ x: 40, y: 65 },
-					{ x: 50, y: 71 },
-					{ x: 60, y: 68 },
-					{ x: 70, y: 38 },
-					{ x: 80, y: 92, indexLabel: "Highest" },
-					{ x: 90, y: 54 },
-					{ x: 100, y: 60 },
-					{ x: 110, y: 21 },
-					{ x: 600, y: 490 },
-					{ x: 1300, y: 36 }
-				]
-			}]
+		var options = {}
+		if(this.props.input.length > 1){
+			options = {
+				animationEnabled: true,
+				exportEnabled: true,
+				theme: "light2", //"light1", "dark1", "dark2"
+				title:{
+					text: "Simple Column Chart with Index Labels"
+				},
+				axisY: {
+					includeZero: true
+				},
+				data: [{
+					type: "column",
+					indexLabelFontColor: "#5A5757",
+					indexLabelPlacement: "outside",
+					dataPoints: [
+						{ x: this.props.input[0].cl_age90, y: this.props.input[0].P },
+						{ x: this.props.input[1].cl_age90, y: this.props.input[1].P },
+						{ x: this.props.input[2].cl_age90, y: this.props.input[2].P },
+						{ x: this.props.input[3].cl_age90, y: this.props.input[3].P },
+						{ x: this.props.input[4].cl_age90, y: this.props.input[4].P },
+						{ x: this.props.input[5].cl_age90, y: this.props.input[5].P },
+						{ x: this.props.input[6].cl_age90, y: this.props.input[6].P },
+						{ x: this.props.input[7].cl_age90, y: this.props.input[7].P },
+						{ x: this.props.input[8].cl_age90, y: this.props.input[8].P },
+						{ x: this.props.input[9].cl_age90, y: this.props.input[9].P }
+					]
+				}]
+			}
+		} else {
+			options = {
+				animationEnabled: true,
+				exportEnabled: true,
+				theme: "light2", //"light1", "dark1", "dark2"
+				title:{
+					text: "Simple Column Chart with Index Labels"
+				},
+				axisY: {
+					includeZero: true
+				},
+				data: [{
+					type: "column",
+					indexLabelFontColor: "#5A5757",
+					indexLabelPlacement: "outside",
+					dataPoints: [
+						{ x: 1, y: 1 }
+					]
+				}]
+			}	
 		}
 		
 		return (
 		<div>
-			<p>Data from App is : {this.props.pInput1}, {this.props.pInput2}</p>
 			<CanvasJSChart options = {options} 
 				/* onRef={ref => this.chart = ref} */
 			/>

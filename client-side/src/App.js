@@ -14,12 +14,12 @@ class App extends Component {
     super(props);
     this.state = { back: [], realtimedata: [{key: ""}]};
   }
-  //http://localhost:8080/covid_data/heb/dep?week=2020-S24&dep=06
+  //
   callServer() {
     fetch("http://localhost:8080/covid_data/heb/dep")
       .then(res => res.json())
       .then(res => this.setState({ back: res }));
-  }   
+  }
 
   callRealTimeData() {
     fetch("https://coronavirusapi-france.now.sh/FranceLiveGlobalData")
@@ -53,7 +53,7 @@ class App extends Component {
 
           <Switch>
             <Route path="/graph">
-              <GraphColumn pInput2={2}></GraphColumn>
+              <GraphColumn></GraphColumn>
               <GraphCurve></GraphCurve>
               <Grid data={this.state.realtimedata}></Grid>
             </Route>

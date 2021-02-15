@@ -11,8 +11,8 @@ export const Grid = ({data}) => {
 
     const [rowData, setRowData] = useState([
         { Country: "France", Name: "Cas confirmes", Number: data[0].casConfirmes },
-        { Country: "France", Name: "Deces", Number: data[0].deces},
-        { Country: "France", Name: "Reanimation", Number: data[0].reanimation}
+        { Country: "France", Name: "Deces", Number: data[0].deces },
+        { Country: "France", Name: "Reanimation", Number: data[0].reanimation }
     ]);
 
     return (

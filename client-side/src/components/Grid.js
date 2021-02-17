@@ -10,16 +10,20 @@ export const Grid = ({data}) => {
     const [gridColumnApi, setGridColumnApi] = useState(null);
 
     const [rowData, setRowData] = useState([
-        { Country: "France", Name: "Cas confirmes", Number: data[0].casConfirmes },
-        { Country: "France", Name: "Deces", Number: data[0].deces },
-        { Country: "France", Name: "Reanimation", Number: data[0].reanimation }
+        { Name: "Cas confirmes", Number: data[0].casConfirmes },
+        { Name: "Deces", Number: data[0].deces },
+        { Name: "Hospitalisés", Number: data[0].hospitalises },
+        { Name: "Reanimation", Number: data[0].reanimation },
+        { Name: "Guéris", Number: data[0].gueris },
     ]);
 
     return (
-        <div className="ag-theme-alpine" style={{ height: 400, width: 600 }}>
+        <div className="ag-theme-alpine" style={{ height: 270, width: 415 }}>
+            <h2>
+                Données en France du {data[0].date}
+            </h2>
             <AgGridReact
                 rowData={rowData}>
-                <AgGridColumn field="Country"></AgGridColumn>
                 <AgGridColumn field="Name"></AgGridColumn>
                 <AgGridColumn field="Number"></AgGridColumn>
             </AgGridReact>

@@ -6,7 +6,6 @@ import { Grid } from './components/Grid.js';
 import { Map } from './components/Map.js'
 import { BrowserRouter as Router, Switch, Route, Link } from "react-router-dom"
 import { Component } from 'react';
-import RealTimeData from './components/RealTimeData';
 
 class App extends Component {
 
@@ -37,31 +36,38 @@ class App extends Component {
       <Router>
         <div className="App">
           <h1>
-            Best app !
+            Covid-19 Stats
           </h1>
-          <ul>
-            <li>
-              <Link to="/">Home</Link>
-            </li>
-            <li>
-              <Link to="/graph">Graph</Link>
-            </li>
-            <li>
-              <Link to="/map">Map</Link>
-            </li>
-          </ul>
+          <Link to="/">
+            <button type="button">
+              Home
+            </button>
+          </Link>
+          <Link to="/graph">
+            <button type="button">
+              Graph
+            </button>
+          </Link>
+          <Link to="/map">
+            <button type="button">
+              Map
+            </button>
+          </Link>
 
           <Switch>
             <Route path="/graph">
-              <GraphColumn></GraphColumn>
-              <GraphCurve></GraphCurve>
-              <Grid data={this.state.realtimedata}></Grid>
+              <GraphColumn/>
+              <GraphCurve/>
+              <Grid data={this.state.realtimedata}/>
             </Route>
             <Route path="/map">
-              <Map data = {this.state.mapData}></Map>
+              <Map data = {this.state.mapData}/>
+              <Grid data={this.state.realtimedata}/>
+            </Route>
+            <Route path="/">
+              <Grid data={this.state.realtimedata}/>
             </Route>
           </Switch>
-          <RealTimeData data={this.state.realtimedata}></RealTimeData>
         </div>
       </Router>
     );

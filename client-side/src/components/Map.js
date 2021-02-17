@@ -7,6 +7,8 @@ import './Map.scss'
 export const Map = ({data}) => {
   const [pointedLocation, setPointedLocation] = useState(null);
   const [tooltipStyle, setTooltipsStyle] = useState({ display: 'none' })
+  const [currentWeek, setCurrentWeek] = useState("2020-S21");
+  const [currentDisplayedData, setCurrentDisplayedData] = useState([]);
   // constructor(props) {
   //   super(props);
 
@@ -20,6 +22,16 @@ export const Map = ({data}) => {
   //   this.handleLocationMouseOut = this.handleLocationMouseOut.bind(this);
   //   this.handleLocationMouseMove = this.handleLocationMouseMove.bind(this);
   // }
+
+  const UpdateDisplayedData = () => {
+    if(currentDisplayedData.length == 0) {
+      for (let i = 0; i < data.length; i++) {
+        if(data[i].week == currentWeek) {
+          currentDisplayedData.push(data[i]);
+        }
+      }
+    }
+  }
 
   const handleLocationMouseOver = (event) => {
     const pointedLocation = getLocationName(event);
@@ -41,17 +53,13 @@ export const Map = ({data}) => {
   }
 
   const getLocationClassName = (location, index) => {
-    for (let i = 0; i < data.length; i++) {
-      if (data[i].dep == location.id) {
-        if (data[i].pop <= "250000") {
-          return `svg-map__location--heat0`;
-        } else if (data[i].pop <= "500000") {
-          return `svg-map__location--heat1`;
-        } else if (data[i].pop <= "750000") {
-          return `svg-map__location--heat2`;
-        } else {
-          return `svg-map__location--heat3`;
-        }
+    UpdateDisplayedData();
+    for (let i = 0; i < currentDisplayedData.length; i++) {
+      if (currentDisplayedData[i].dep == location.id) {
+        if (currentDisplayedData[i].pop <= "250000") return `svg-map__location--heat0`;
+        else if (currentDisplayedData[i].pop <= "500000") return `svg-map__location--heat1`;
+        else if (currentDisplayedData[i].pop <= "750000") return `svg-map__location--heat2`;
+        else return `svg-map__location--heat3`;
       }
     }
   }

@@ -12,13 +12,13 @@ class App extends Component {
 
   constructor(props) {
     super(props);
-    this.state = { back: [], realtimedata: [{key: ""}]};
+    this.state = { mapData: [], realtimedata: [{key: ""}]};
   }
-  //
-  callServer() {
-    fetch("http://localhost:8080/covid_data/heb/dep?week=2020-S21&cl_age90=0")
+
+  GetDataForMap() {
+    fetch("http://localhost:8080/covid_data/heb/dep?cl_age90=0")
       .then(res => res.json())
-      .then(res => this.setState({ back: res }));
+      .then(res => this.setState({ mapData: res }));
   }
 
   callRealTimeData() {
@@ -28,7 +28,7 @@ class App extends Component {
   }
 
   componentWillMount() {
-    this.callServer();
+    this.GetDataForMap();
     this.callRealTimeData();
   }
 
@@ -58,7 +58,7 @@ class App extends Component {
               <Grid data={this.state.realtimedata}></Grid>
             </Route>
             <Route path="/map">
-              <Map data = {this.state.back}></Map>
+              <Map data = {this.state.mapData}></Map>
             </Route>
           </Switch>
           <RealTimeData data={this.state.realtimedata}></RealTimeData>

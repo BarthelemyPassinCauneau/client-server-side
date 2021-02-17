@@ -16,7 +16,7 @@ class App extends Component {
   }
   //
   callServer() {
-    fetch("http://localhost:8080/covid_data/heb/dep")
+    fetch("http://localhost:8080/covid_data/heb/dep?week=2020-S21&cl_age90=0")
       .then(res => res.json())
       .then(res => this.setState({ back: res }));
   }

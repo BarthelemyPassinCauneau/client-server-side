@@ -41,26 +41,19 @@ export const Map = ({data}) => {
   }
 
   const getLocationClassName = (location, index) => {
-    data.map(d => {
-      if (d.week == "2020-S21" && d.cl_age90 == 0) {
-        if (d.dep == location.id) {
-          console.log(d.pop)
-          if (d.pop <= "250000") {
-            console.log(0)
-            return `svg-map__location--heat0`;
-          } else if (d.pop <= "500000") {
-            console.log(1)
-            return `svg-map__location--heat1`;
-          } else if (d.pop <= "750000") {
-            console.log(2)
-            return `svg-map__location--heat2`;
-          } else if (d.pop > "750000") {
-            console.log(3)
-            return `svg-map__location--heat3`;
-          }
+    for (let i = 0; i < data.length; i++) {
+      if (data[i].dep == location.id) {
+        if (data[i].pop <= "250000") {
+          return `svg-map__location--heat0`;
+        } else if (data[i].pop <= "500000") {
+          return `svg-map__location--heat1`;
+        } else if (data[i].pop <= "750000") {
+          return `svg-map__location--heat2`;
+        } else {
+          return `svg-map__location--heat3`;
         }
       }
-    });
+    }
   }
 
   if (data.length > 1) {

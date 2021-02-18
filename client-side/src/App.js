@@ -30,7 +30,7 @@ class App extends Component {
     navigator.geolocation.getCurrentPosition(position => {
       fetch("https://api-adresse.data.gouv.fr/reverse/?lat=" + position.coords.latitude + '&lon=' + position.coords.longitude)
         .then(location => location.json())
-        .then(location => this.setState({ currentDep: parseInt(location.features[0].properties.context.split(",")[0])}));
+        .then(location => this.setState({ currentDep: location.features[0].properties.context.split(",")[0]}));
     });
   }
 
@@ -66,7 +66,6 @@ class App extends Component {
           <Switch>
             <Route path="/graph">
               <GraphColumn currentDep = {this.state.currentDep}/>
-              <GraphCurve currentDep = {this.state.currentDep}/>
               <Grid data={this.state.realtimedata}/>
             </Route>
             <Route path="/map">

@@ -4,6 +4,7 @@ var path = require('path');
 
 
 var covidRouter = require('./covid_data');
+var regionsRouter = require('./regions');
 const cors = require('cors');
 
 var app = express();
@@ -14,6 +15,7 @@ app.use(express.urlencoded({ extended: false }));
 app.use(cors());
 
 app.use('/covid_data', covidRouter);
+app.use('/regions', regionsRouter);
 
 const port = 8080;
 const hostname = 'localhost';

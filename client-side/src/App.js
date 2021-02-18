@@ -11,7 +11,7 @@ class App extends Component {
 
   constructor(props) {
     super(props);
-    this.state = { mapData: [], realtimedata: [{key: ""}]};
+    this.state = { mapData: [], realtimedata: [{key: ""}], currentDep : 0};
   }
 
   GetDataForMap() {
@@ -26,9 +26,18 @@ class App extends Component {
       .then(res => this.setState({ realtimedata: res.FranceGlobalLiveData}));
   }
 
+  GetLocation() {
+    navigator.geolocation.getCurrentPosition(position => {
+      fetch("https://api-adresse.data.gouv.fr/reverse/?lat=" + position.coords.latitude + '&lon=' + position.coords.longitude)
+        .then(location => location.json())
+        .then(location => this.setState({ currentDep: parseInt(location.features[0].properties.context.split(",")[0])}));
+    });
+  }
+
   componentWillMount() {
     this.GetDataForMap();
     this.callRealTimeData();
+    this.GetLocation();
   }
 
   render() {
@@ -56,8 +65,8 @@ class App extends Component {
 
           <Switch>
             <Route path="/graph">
-              <GraphColumn/>
-              <GraphCurve/>
+              <GraphColumn currentDep = {this.state.currentDep}/>
+              <GraphCurve currentDep = {this.state.currentDep}/>
               <Grid data={this.state.realtimedata}/>
             </Route>
             <Route path="/map">

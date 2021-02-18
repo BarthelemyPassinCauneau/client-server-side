@@ -15,7 +15,7 @@ const compareFilter = (key, value) => {
             return filter
         }
     }
-    return { key: value }
+    return value
 }
 
 const filtering = (filters) => {

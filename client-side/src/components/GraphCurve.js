@@ -5,7 +5,7 @@ import CanvasJSReact from '../assets/canvasjs/canvasjs.react';
 var CanvasJSChart = CanvasJSReact.CanvasJSChart;
 var dataPoints =[];
 var dep = 0;
-export const GraphCurve = ({currentDep}) => {
+export const GraphCurve = ({currentDep, mode}) => {
 	const [data, setData] = useState({ dataBack : [{key: 0}]});
 
 	const callServerUser = () =>{
@@ -16,9 +16,7 @@ export const GraphCurve = ({currentDep}) => {
 		.then(res => res.json())
 		.then(res => { 
 			res.forEach(element => {
-				console.log(element);
 				if(element.cl_age90 == 0){
-					
 					dataPoints.push({ x: parseInt(element.week.split("S")[1], 10), y: element.P });
 				}
 			});
@@ -26,13 +24,13 @@ export const GraphCurve = ({currentDep}) => {
 			setData({dataBack : [{key: 0}]});
 		});
 	}
-
+	var theme = mode ? "dark2" : "white2"
 	var options = {}
 	if(dataPoints != [] ){
 		options = {
 			animationEnabled: true,
 			exportEnabled: true,
-			theme: "white2",
+			theme: theme,
 			title: {
 				text: "Evolution du nombre d'admission pour le département "+currentDep,
 			},
@@ -51,7 +49,7 @@ export const GraphCurve = ({currentDep}) => {
 		options = {
 			animationEnabled: true,
 			exportEnabled: true,
-			theme: "white2",
+			theme: theme,
 			title: {
 				text: "Evolution du nombre d'admission pour le département "+currentDep,
 			},

@@ -6,7 +6,7 @@ import { GraphCurve } from "./GraphCurve";
 import { initialiseAgGridWithAngular1 } from "ag-grid-community";
 
 var CanvasJSChart = CanvasJSReact.CanvasJSChart;
-export const GraphColumn = ({currentDep}) => {	
+export const GraphColumn = ({currentDep, mode}) => {	
 	const [data, setData] = useState({ dataBack : [{key: 0}]});
 	const [departement, setDepartement] = useState({ defaultDepartement : {value : "00", label : "00"}});
 	const [semaine, setSemaine] = useState({ defaultSemaine : {value : "24", label : "24"}});
@@ -43,7 +43,7 @@ export const GraphColumn = ({currentDep}) => {
 		departement.defaultDepartement.value = currentDep;
 		departement.defaultDepartement.label = currentDep;
 	}
-
+	var theme = mode ? "dark2" : "white2"
 	var options = {}
 	var {selectedSem} = semaine.defaultSemaine.value;
 	var {selectedDep} = departement.defaultDepartement.value;
@@ -51,7 +51,7 @@ export const GraphColumn = ({currentDep}) => {
 		options = {
 			animationEnabled: true,
 			exportEnabled: true,
-			theme: "white2", 
+			theme: theme, 
 			title:{
 				text: "Nombre d'admission par tranche d'âge dans le département "+departement.defaultDepartement.value+" lors de la semaine "+semaine.defaultSemaine.value
 			},
@@ -85,7 +85,7 @@ export const GraphColumn = ({currentDep}) => {
 		options = {
 			animationEnabled: true,
 			exportEnabled: true,
-			theme: "white2",
+			theme: theme,
 			title:{
 				text: "Nombre d'admission par tranche d'âge"
 			},
@@ -101,17 +101,19 @@ export const GraphColumn = ({currentDep}) => {
 				]
 			}]
 		}
-	}
+	}	
 
 	return (
 		<div>
 			<p>Sélectionnez une semaine</p>
 			<Select options={semaineBase} value={selectedSem} onChange={handleChangeSem} defaultValue = {semaine.defaultSemaine} />
 			<p>Sélectionnez un département</p>
-			<Select options={departementBase} value={selectedDep} onChange={handleChangeDep} defaultValue = {departement.defaultDepartement}/>
+			<Select options={departementBase} value={selectedDep} onChange={handleChangeDep} defaultValue = {departement.defaultDepartement} />
 			<CanvasJSChart options = {options} />
 			<br></br>
-			<GraphCurve currentDep={departement.defaultDepartement.value}/>
+			<GraphCurve currentDep={departement.defaultDepartement.value} mode={mode}/>
 		</div>
 	);
+
+
 }

@@ -10,7 +10,7 @@ import { FetchLocationUserDep } from "./lib/FetchLocationUserDep";
 import { FetchServerMapData } from "./lib/FetchServerMapData";
 import useLocalStorage from "./lib/useLocalStorage";
 
-import { useEffect, useState, useCallback } from 'react';
+import { useState, useCallback } from 'react';
 import { BrowserRouter as Router, Switch, Route, Link } from "react-router-dom";
 
 const App = () => {
@@ -20,11 +20,9 @@ const App = () => {
 
   const [displayMode, setDisplayMode] = useLocalStorage('darkmode');
 
-  useEffect(() => {
-    FetchServerMapData.then(data => setMapData(data));
-    FetchFranceLiveGlobalData.then(data => setRealtimeData(data));
-    FetchLocationUserDep.then(dep => setLocationUserDep(dep));
-  });
+  FetchServerMapData.then(data => setMapData(data));
+  FetchFranceLiveGlobalData.then(data => setRealtimeData(data));
+  FetchLocationUserDep.then(dep => setLocationUserDep(dep));
 
   const handleChangeMode = useCallback(
 		(e) => {

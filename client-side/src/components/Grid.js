@@ -4,9 +4,6 @@ export const Grid = ({data, mode}) => {
     if (data.length > 1) {
         return (
             <div className={`Grid ${mode ? 'dark' : 'light'}`}>
-                <h3>
-                    Données en France datant du {data[0].date}
-                </h3>
                 <table>
                     <tr>
                         <td>Cas confirmés</td>

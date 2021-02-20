@@ -1,19 +1,24 @@
-import logo from './logo.svg';
-import './App.css';
+import './App.scss';
+
 import { GraphColumn } from './components/GraphColumn.js';
-import { GraphCurve } from './components/GraphCurve.js';
-import { Grid } from './components/Grid.js';
-import { Map } from './components/Map.js'
-import { BrowserRouter as Router, Switch, Route, Link } from "react-router-dom";
+import { Grid } from './components/Grid';
+import { Map } from './components/Map'
+import { DarkModeButton } from './components/DarkModeButton';
+
 import { FetchFranceLiveGlobalData } from "./lib/FetchFranceLiveGlobalData";
 import { FetchLocationUserDep } from "./lib/FetchLocationUserDep";
 import { FetchServerMapData } from "./lib/FetchServerMapData";
-import { Component, useEffect, useState } from 'react';
+import useLocalStorage from "./lib/useLocalStorage";
+
+import { useEffect, useState, useCallback } from 'react';
+import { BrowserRouter as Router, Switch, Route, Link } from "react-router-dom";
 
 const App = () => {
   const [mapData, setMapData] = useState([]);
   const [realtimeData, setRealtimeData] = useState([{key: ""}]);
   const [locationUserDep, setLocationUserDep] = useState(0);
+
+  const [displayMode, setDisplayMode] = useLocalStorage('darkmode');
 
   useEffect(() => {
     FetchServerMapData.then(data => setMapData(data));
@@ -21,13 +26,24 @@ const App = () => {
     FetchLocationUserDep.then(dep => setLocationUserDep(dep));
   });
 
-
+  const handleChangeMode = useCallback(
+		(e) => {
+			const modeValue = !!e.target.checked;
+			setDisplayMode(modeValue);
+		},
+		[setDisplayMode],
+  );
+  
   return (
       <Router>
-        <div className="App">
+        <div className={`App ${displayMode ? 'dark' : 'light'}`}>
           <h1>
             Covid-19 Stats
           </h1>
+          <DarkModeButton
+						onChange={handleChangeMode}
+						mode={displayMode}
+					/>
           <Link to="/">
             <button type="button">
               Home

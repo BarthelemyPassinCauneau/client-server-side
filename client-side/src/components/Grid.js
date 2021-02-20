@@ -5,15 +5,14 @@ import 'ag-grid-community/dist/styles/ag-grid.css';
 import 'ag-grid-community/dist/styles/ag-theme-alpine.css';
 
 export const Grid = ({data}) => {
-
     const [gridApi, setGridApi] = useState(null);
     const [gridColumnApi, setGridColumnApi] = useState(null);
 
     const [rowData, setRowData] = useState([
-        { Name: "Cas confirmes", Number: data[0].casConfirmes },
-        { Name: "Deces", Number: data[0].deces },
+        { Name: "Cas confirmés", Number: data[0].casConfirmes },
+        { Name: "Décès", Number: data[0].deces },
         { Name: "Hospitalisés", Number: data[0].hospitalises },
-        { Name: "Reanimation", Number: data[0].reanimation },
+        { Name: "Réanimation", Number: data[0].reanimation },
         { Name: "Guéris", Number: data[0].gueris },
     ]);
 

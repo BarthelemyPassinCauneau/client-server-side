@@ -1,31 +1,36 @@
-import React, { useState } from 'react';
-import { AgGridColumn, AgGridReact } from 'ag-grid-react';
+import "./Grid.scss";
 
-import 'ag-grid-community/dist/styles/ag-grid.css';
-import 'ag-grid-community/dist/styles/ag-theme-alpine.css';
-
-export const Grid = ({data}) => {
-    const [gridApi, setGridApi] = useState(null);
-    const [gridColumnApi, setGridColumnApi] = useState(null);
-
-    const [rowData, setRowData] = useState([
-        { Name: "Cas confirmés", Number: data[0].casConfirmes },
-        { Name: "Décès", Number: data[0].deces },
-        { Name: "Hospitalisés", Number: data[0].hospitalises },
-        { Name: "Réanimation", Number: data[0].reanimation },
-        { Name: "Guéris", Number: data[0].gueris },
-    ]);
-
-    return (
-        <div className="ag-theme-alpine" style={{ height: 270, width: 415 }}>
-            <h2>
-                Données en France du {data[0].date}
-            </h2>
-            <AgGridReact
-                rowData={rowData}>
-                <AgGridColumn field="Name"></AgGridColumn>
-                <AgGridColumn field="Number"></AgGridColumn>
-            </AgGridReact>
-        </div>
-    );
+export const Grid = ({data, mode}) => {
+    if (data.length > 1) {
+        return (
+            <div className={`Grid ${mode ? 'dark' : 'light'}`}>
+                <h3>
+                    Données en France datant du {data[0].date}
+                </h3>
+                <table>
+                    <tr>
+                        <td>Cas confirmés</td>
+                        <td>{`${data[0].casConfirmes}`}</td>
+                    </tr>
+                    <tr>
+                        <td>Décès</td>
+                        <td>{`${data[0].deces}`}</td>
+                    </tr>
+                    <tr>
+                        <td>Hospitalisés</td>
+                        <td>{`${data[0].hospitalises}`}</td>
+                    </tr>
+                    <tr>
+                        <td>Réanimation</td>
+                        <td>{`${data[0].reanimation}`}</td>
+                    </tr>
+                    <tr>
+                        <td>Guéris</td>
+                        <td>{`${data[0].gueris}`}</td>
+                    </tr>
+                </table>
+            </div>
+        );
+    }
+    return (<div>Accès aux données en cours...</div>);
 };

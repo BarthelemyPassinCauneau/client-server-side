@@ -15,7 +15,7 @@ import { BrowserRouter as Router, Switch, Route, Link } from "react-router-dom";
 
 const App = () => {
   const [mapData, setMapData] = useState([]);
-  const [realtimeData, setRealtimeData] = useState([{key: ""}]);
+  const [realtimeData, setRealtimeData] = useState([]);
   const [locationUserDep, setLocationUserDep] = useState(0);
 
   const [displayMode, setDisplayMode] = useLocalStorage('darkmode');
@@ -63,16 +63,12 @@ const App = () => {
           <Switch>
             <Route path="/graph">
               <GraphColumn currentDep = {locationUserDep}/>
-              <Grid data={realtimeData}/>
             </Route>
             <Route path="/map">
               <Map data = {mapData}/>
-              <Grid data={realtimeData}/>
-            </Route>
-            <Route path="/">
-              <Grid data={realtimeData}/>
             </Route>
           </Switch>
+          <Grid data={realtimeData} mode={displayMode}/>
         </div>
       </Router>
     );

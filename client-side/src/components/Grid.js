@@ -1,7 +1,7 @@
 import "./Grid.scss";
 
 export const Grid = ({data, mode}) => {
-    if (data.length > 1) {
+    if (data.length > 0) {
         return (
             <div className={`Grid ${mode ? 'dark' : 'light'}`}>
                 <table>
@@ -11,8 +11,8 @@ export const Grid = ({data, mode}) => {
                         </tr>
                     </thead>
                     <tr>
-                        <td>Cas confirmés</td>
-                        <td>{`${data[0].casConfirmes}`}</td>
+                        <td>Guéris</td>
+                        <td>{`${data[0].gueris}`}</td>
                     </tr>
                     <tr>
                         <td>Décès</td>
@@ -26,5 +26,5 @@ export const Grid = ({data, mode}) => {
             </div>
         );
     }
-    return (<div>Accès aux données en cours...</div>);
+    return (<div className={`Grid ${mode ? 'dark' : 'light'}`}>Accès aux données en cours...</div>);
 };

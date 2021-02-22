@@ -7,14 +7,15 @@ import { DarkModeButton } from './components/DarkModeButton';
 
 import { FetchFranceLiveGlobalData } from "./lib/FetchFranceLiveGlobalData";
 import { FetchLocationUserDep } from "./lib/FetchLocationUserDep";
-import { FetchServerMapData } from "./lib/FetchServerMapData";
+import { FetchServerMapDataDep, FetchServerMapDataReg } from "./lib/FetchServerMapData";
 import useLocalStorage from "./lib/useLocalStorage";
 
 import { useState, useCallback, useEffect } from 'react';
 import { BrowserRouter as Router, Switch, Route, Link } from "react-router-dom";
 
 const App = () => {
-  const [mapData, setMapData] = useState([]);
+  const [mapDataDep, setMapDataDep] = useState([]);
+  const [mapDataReg, setMapDataReg] = useState([]);
   const [realtimeData, setRealtimeData] = useState([]);
   const [locationUserDep, setLocationUserDep] = useState(0);
 
@@ -22,7 +23,8 @@ const App = () => {
   useEffect(() => {
     FetchFranceLiveGlobalData.then(data => setRealtimeData(data));
   });
-  FetchServerMapData.then(data => setMapData(data));
+  FetchServerMapDataDep.then(data => setMapDataDep(data));
+  FetchServerMapDataReg.then(data => setMapDataReg(data));
   FetchLocationUserDep.then(dep => setLocationUserDep(dep));
 
   const handleChangeMode = useCallback(
@@ -64,7 +66,7 @@ const App = () => {
               <GraphColumn currentDep = {locationUserDep} mode={displayMode}/>
             </Route>
             <Route path="/map">
-              <Map data = {mapData}/>
+              <Map Dep = {mapDataDep} Reg = {mapDataReg} mode = {displayMode} />
             </Route>
           </Switch>
           <Grid data={realtimeData} mode={displayMode}/>

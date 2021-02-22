@@ -1,6 +1,7 @@
 import CanvasJSReact from '../assets/canvasjs/canvasjs.react';
 
 var CanvasJSChart = CanvasJSReact.CanvasJSChart;
+
 export const GraphCurve = ({currentDep, mode, input}) => {
 	var theme = mode ? "dark2" : "white2"
 	var options = {}
@@ -40,7 +41,7 @@ export const GraphCurve = ({currentDep, mode, input}) => {
 			},
 			data: [{
 				type: "line",
-				dataPoints: [{x:1, y:1}]
+				dataPoints: input
 			}]
 		}
 	}

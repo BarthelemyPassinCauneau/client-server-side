@@ -1,6 +1,6 @@
 import './App.scss';
 
-import { GraphColumn } from './components/GraphColumn.js';
+import { Graph } from './components/Graph.js';
 import { Grid } from './components/Grid';
 import { Map } from './components/Map'
 import { DarkModeButton } from './components/DarkModeButton';
@@ -61,7 +61,7 @@ const App = () => {
 
           <Switch>
             <Route path="/graph">
-              <GraphColumn currentDep = {locationUserDep} mode={displayMode}/>
+              <Graph currentDep = {locationUserDep} mode={displayMode}/>
             </Route>
             <Route path="/map">
               <Map data = {mapData}/>

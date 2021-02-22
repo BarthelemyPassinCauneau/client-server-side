@@ -101,14 +101,26 @@ export const GraphColumn = ({currentDep, mode}) => {
 				]
 			}]
 		}
-	}	
+	}
+	const colourStyles = {
+		control: styles => ({ ...styles, backgroundColor: mode ? 'black' : 'white', width:100 }),
+		option: (styles, { data, isDisabled, isFocused, isSelected }) => {
+			return {
+				...styles,
+				backgroundColor: isSelected ? "#3f51b5" : isFocused ? "#757de8" : mode ? "black" : "white",
+				color: mode ? 'white' : 'black',
+				width: 100
+			};
+		},
+		container: styles => ({...styles, width: 100})
+	  };
 
 	return (
 		<div>
 			<p>Sélectionnez une semaine</p>
-			<Select options={semaineBase} value={selectedSem} onChange={handleChangeSem} defaultValue = {semaine.defaultSemaine} />
+			<Select styles={colourStyles} options={semaineBase} value={selectedSem} onChange={handleChangeSem} defaultValue = {semaine.defaultSemaine} />
 			<p>Sélectionnez un département</p>
-			<Select options={departementBase} value={selectedDep} onChange={handleChangeDep} defaultValue = {departement.defaultDepartement} />
+			<Select styles={colourStyles} options={departementBase} value={selectedDep} onChange={handleChangeDep} defaultValue = {departement.defaultDepartement} />
 			<CanvasJSChart options = {options} />
 			<br></br>
 			<GraphCurve currentDep={departement.defaultDepartement.value} mode={mode}/>

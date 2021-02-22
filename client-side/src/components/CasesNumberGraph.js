@@ -13,7 +13,7 @@ var dep = 0;
 var SEM = 21;
 var NB_DEP = 96;
 
-export const Graph = ({currentDep, mode}) => {
+export const CasesNumberGraph = ({currentDep, mode}) => {
     const [dataColumn, setDataColumn] = useState({ dataBack : [{key: 0}]});
     const [dataCurve, setDataCurve] = useState({ dataBack : [{key: 0}]});
 	const [departement, setDepartement] = useState({ defaultDepartement : {value : "00", label : "00"}});
@@ -104,8 +104,14 @@ export const Graph = ({currentDep, mode}) => {
             <div style={{display: 'flex',  justifyContent:'center', alignItems:'center'}}>  
                 <Select styles={colourStyles} options={semaineBase} value={selectedSem} onChange={handleChangeSem} defaultValue = {semaine.defaultSemaine} />
             </div> 
-            <GraphColumn currentDep={departement.defaultDepartement.value} currentSem={semaine.defaultSemaine.value} mode={mode} input={pointsColumn}/>
-			<GraphCurve currentDep={departement.defaultDepartement.value} mode={mode} input={pointsCurve}/>
+            <GraphColumn currentDep={departement.defaultDepartement.value} currentSem={semaine.defaultSemaine.value} mode={mode} input={pointsColumn}
+                title={"Nombre de cas par tranche d'âge dans le département "+departement.defaultDepartement.value+" lors de la semaine "+semaine.defaultSemaine.value} 
+                titleX={"Tranche d'âge"} 
+                titleY={"Nb de cas"}/>
+			<GraphCurve currentDep={departement.defaultDepartement.value} mode={mode} input={pointsCurve}
+                title={"Evolution du nombre de cas par semaine pour le département "+departement.defaultDepartement.value} 
+                titleX={"Semaine"} 
+                titleY={"Nb de cas"}/>
 		</div>
 	);
 }

@@ -2,7 +2,7 @@ import CanvasJSReact from '../assets/canvasjs/canvasjs.react';
 
 var CanvasJSChart = CanvasJSReact.CanvasJSChart;
 
-export const GraphColumn = ({currentDep, currentSem, mode, input}) => {	
+export const GraphColumn = ({currentDep, currentSem, mode, input, title, titleX, titleY}) => {	
 	var theme = mode ? "dark2" : "white2"
 	var options = {}
 
@@ -12,13 +12,13 @@ export const GraphColumn = ({currentDep, currentSem, mode, input}) => {
 			exportEnabled: true,
 			theme: theme, 
 			title:{
-				text: "Nombre d'admission par tranche d'âge dans le département "+currentDep+" lors de la semaine "+currentSem
+				text: title
 			},
 			axisY: {
-				title: "Nb admission"
+				title: titleY
 			},
 			axisX: {
-				title: "Tranche d'âge",
+				title: titleX,
 				includeZero: true
 			},
 			data: [{
@@ -33,9 +33,6 @@ export const GraphColumn = ({currentDep, currentSem, mode, input}) => {
 			animationEnabled: true,
 			exportEnabled: true,
 			theme: theme,
-			axisY: {
-				includeZero: true
-			},
 			data: [{
 				type: "column",
 				indexLabelFontColor: "#5A5757",

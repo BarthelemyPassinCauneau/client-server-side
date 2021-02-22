@@ -1,6 +1,6 @@
 import './App.scss';
 
-import { Graph } from './components/Graph.js';
+import { CasesNumberGraph } from './components/CasesNumberGraph.js';
 import { Grid } from './components/Grid';
 import { Map } from './components/Map'
 import { DarkModeButton } from './components/DarkModeButton';
@@ -63,7 +63,7 @@ const App = () => {
 
           <Switch>
             <Route path="/graph">
-              <Graph currentDep = {locationUserDep} mode={displayMode}/>
+              <CasesNumberGraph currentDep = {locationUserDep} mode={displayMode}/>
             </Route>
             <Route path="/map">
               <Map Dep = {mapDataDep} Reg = {mapDataReg} mode = {displayMode} />

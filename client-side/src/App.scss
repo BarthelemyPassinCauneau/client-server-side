@@ -1,5 +1,6 @@
 .App {
   min-height: 100vh;
+  padding-top: 20px;
   text-align: center;
   &.dark {
     background-color: #30364b;
@@ -8,5 +9,9 @@
   h1 {
 		margin: 0;
 		padding-bottom: 20px;
-	}
+  }
+  button {
+    margin-bottom: 20px;
+    margin-right: 5px;
+  }
 }

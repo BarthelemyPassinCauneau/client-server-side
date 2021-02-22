@@ -2,7 +2,8 @@ import './App.scss';
 
 import { Graph } from './components/Graph.js';
 import { Grid } from './components/Grid';
-import { Map } from './components/Map'
+import { Map } from './components/Map';
+import { Home } from './components/Home';
 import { DarkModeButton } from './components/DarkModeButton';
 
 import { FetchFranceLiveGlobalData } from "./lib/FetchFranceLiveGlobalData";
@@ -67,6 +68,9 @@ const App = () => {
             </Route>
             <Route path="/map">
               <Map Dep = {mapDataDep} Reg = {mapDataReg} mode = {displayMode} />
+            </Route>
+            <Route path="/">
+              <Home/>
             </Route>
           </Switch>
           <Grid data={realtimeData} mode={displayMode}/>

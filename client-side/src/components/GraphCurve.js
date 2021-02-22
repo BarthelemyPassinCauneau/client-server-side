@@ -2,7 +2,7 @@ import CanvasJSReact from '../assets/canvasjs/canvasjs.react';
 
 var CanvasJSChart = CanvasJSReact.CanvasJSChart;
 
-export const GraphCurve = ({currentDep, mode, input}) => {
+export const GraphCurve = ({currentDep, mode, input, title, titleX, titleY}) => {
 	var theme = mode ? "dark2" : "white2"
 	var options = {}
 	
@@ -12,13 +12,13 @@ export const GraphCurve = ({currentDep, mode, input}) => {
 			exportEnabled: true,
 			theme: theme,
 			title: {
-				text: "Evolution du nombre d'admission pour le département "+currentDep,
+				text: title,
 			},
 			axisX: {
-				title: "Semaine"
+				title: titleX
 			},
 			axisY: {
-				title: "Nb admission"
+				title: titleY
 			},
 			data: [{
 				type: "line",
@@ -30,15 +30,6 @@ export const GraphCurve = ({currentDep, mode, input}) => {
 			animationEnabled: true,
 			exportEnabled: true,
 			theme: theme,
-			title: {
-				text: "Evolution du nombre d'admission pour le département "+currentDep,
-			},
-			axisX: {
-				title: "Semaine"
-			},
-			axisY: {
-				title: "Nb admission"
-			},
 			data: [{
 				type: "line",
 				dataPoints: input

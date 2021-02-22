@@ -7,20 +7,20 @@ export const Grid = ({data, mode}) => {
                 <table>
                     <thead>
                         <tr>
-                            <th colspan="2">Données en France datant du {data[0].date}</th>
+                            <th colspan="2">Données en France datant du {new Intl.DateTimeFormat('fr-FR', {day: 'numeric', month: 'long', year: 'numeric'}).format(Date.UTC(parseInt(data[0].date.split("-")[0]), parseInt(data[0].date.split("-")[1])-1, parseInt(data[0].date.split("-")[2])))}</th>
                         </tr>
                     </thead>
                     <tr>
                         <td>Guéris</td>
-                        <td>{`${data[0].gueris}`}</td>
+                        <td>{`${new Intl.NumberFormat('fr-FR').format(data[0].gueris)}`}</td>
                     </tr>
                     <tr>
                         <td>Décès</td>
-                        <td>{`${data[0].deces}`}</td>
+                        <td>{`${new Intl.NumberFormat('fr-FR').format(data[0].deces)}`}</td>
                     </tr>
                     <tr>
                         <td>Hospitalisés</td>
-                        <td>{`${data[0].hospitalises}`}</td>
+                        <td>{`${new Intl.NumberFormat('fr-FR').format(data[0].hospitalises)}`}</td>
                     </tr>
                 </table>
             </div>

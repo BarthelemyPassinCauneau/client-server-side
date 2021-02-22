@@ -69,10 +69,10 @@ export const Graph = ({currentDep, mode}) => {
 	};
 
     if(dataColumn.dataBack != undefined && dataColumn.dataBack.length > 1 ){
-        pointsColumn = [{x:1, y:1}];
-        for(var i = 0; i<11; i++){
+        pointsColumn = [];
+        for(var i = 0; i<11; i++){  
             if(dataColumn.dataBack[i].cl_age90 != 0 && dataColumn.dataBack[i].cl_age90 != 1 && dataColumn.dataBack[i].cl_age90 != 90){
-                pointsColumn.push({ x: dataColumn.dataBack[i].cl_age90, y: dataColumn.dataBack[i].P })
+                pointsColumn.push({ x: (dataColumn.dataBack[i].cl_age90-4), y: dataColumn.dataBack[i].P })
             }
         }
     }

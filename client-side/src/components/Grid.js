@@ -26,5 +26,9 @@ export const Grid = ({data, mode}) => {
             </div>
         );
     }
-    return (<div className={`Grid ${mode ? 'dark' : 'light'}`}>Accès aux données en cours...</div>);
+    return (
+    <div className={`Grid ${mode ? 'dark' : 'light'}`}>
+        <p>Accès aux données en cours...</p>
+        <div class="loader"></div>
+    </div>);
 };

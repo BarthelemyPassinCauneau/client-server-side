@@ -6,6 +6,7 @@ export const GraphColumn = ({currentDep, currentSem, mode, input, title, titleX,
 	var theme = mode ? "dark2" : "white2"
 	var options = {}
 
+	//If input isn't empty, set the graph data with it
 	if(input.length > 0 && input != undefined && options.data != input){
 		options = {
 			animationEnabled: true,

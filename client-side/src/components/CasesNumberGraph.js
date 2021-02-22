@@ -11,7 +11,7 @@ var pointsColumn = [{x:1, y:1}];
 var semaineBase = [];
 var dep = 0;
 var SEM = 21;
-var NB_DEP = 96;
+var NB_DEP = 95;
 
 export const CasesNumberGraph = ({currentDep, mode}) => {
     const [dataColumn, setDataColumn] = useState({ dataBack : [{key: 0}]});
@@ -21,66 +21,78 @@ export const CasesNumberGraph = ({currentDep, mode}) => {
 	var {selectedSem} = semaine.defaultSemaine.value;
 	var {selectedDep} = departement.defaultDepartement.value;
 
-    
+    //Set the departement options in the select
 	const departementBase = [];
-    for(var i = 0; i <= NB_DEP; i++){
+    for(var i = 1; i <= NB_DEP; i++){
         var val = i>9 ? ''+i.toString() : '0'+i.toString()
         departementBase.push({value : val, label: val})
     }
 
+	//Call to the back to get number of cases per age range for a given week and department number
     const callServerColumn = (sem, dep) => {
 		let path = "http://localhost:8080/covid_data/heb/dep?week=2020-S"+sem+"&dep="+dep
-		FetchServerColumnData(path).then(data => setDataColumn({dataBack : data}));
+		FetchServerColumnData(path).then(data => {updateColumnGraph(data)});
 	}
 
+	//Call to the back to get total number of cases of all the department for a given week number
     const callServerCurve = () =>{
 		pointsCurve = [];
         semaineBase= [];
 		dep = departement.defaultDepartement.value;
 		let path = "http://localhost:8080/covid_data/heb/dep?dep="+departement.defaultDepartement.value;
-        FetchServerColumnData(path).then(res => {
-			res.forEach(element => {
-                val = parseInt(element.week.split("S")[1], 10)
-				if(element.cl_age90 == 0 && val >= SEM){
-					pointsCurve.push({ x: val, y: element.P });
-                    semaineBase.push({value: val, label: val})
-				}
-			});
-			pointsCurve.sort((a, b)=> a.x - b.x);
-            semaineBase.sort((a, b) => a.value - b.label);
-			setDataCurve({dataBack : [{key: 0}]});
-        });
+        FetchServerColumnData(path).then(data => {updateCurveGraph(data)});
 	}
 
+	//Update column graph with promise result
+	const updateColumnGraph = (data) => {
+		pointsColumn = [];
+		for(var i = 0; i<11; i++){  
+			if(data[i].cl_age90 != 0 && data[i].cl_age90 != 1 && data[i].cl_age90 != 90){
+				pointsColumn.push({ x: (data[i].cl_age90-4), y: data[i].P })
+			}
+		}
+		setDataColumn({dataBack : data})
+	}
+
+	//Update curve graph with promise result
+	const updateCurveGraph = (data) => {
+		data.forEach(element => {
+			val = parseInt(element.week.split("S")[1], 10)
+			if(element.cl_age90 == 0 && val >= SEM){
+				pointsCurve.push({ x: val, y: element.P });
+				semaineBase.push({value: val, label: val})
+			}
+		});
+		pointsCurve.sort((a, b)=> a.x - b.x);
+		semaineBase.sort((a, b) => a.value - b.label);
+		setDataCurve({dataBack : [{key: 0}]});
+	}
+
+	//Set the department with the department of the user and do the first request
     if(departement.defaultDepartement.value == "00" && currentDep != 0){
 		callServerColumn(SEM, currentDep)
 		departement.defaultDepartement.value = currentDep;
 		departement.defaultDepartement.label = currentDep;
 	}
 
+	//Do a call to the back for column graph when the week select is changed
     const handleChangeSem = defaultSemaine => {
 		callServerColumn(defaultSemaine.value, departement.defaultDepartement.value);
 		setSemaine({ defaultSemaine });
 	};
 
+	//Do a call to the back for column graph when the department select is changed
 	const handleChangeDep = defaultDepartement => {
 		callServerColumn(semaine.defaultSemaine.value, defaultDepartement.value);
 		setDepartement({ defaultDepartement });
 	};
 
-    if(dataColumn.dataBack != undefined && dataColumn.dataBack.length > 1 ){
-        pointsColumn = [];
-        for(var i = 0; i<11; i++){  
-            if(dataColumn.dataBack[i].cl_age90 != 0 && dataColumn.dataBack[i].cl_age90 != 1 && dataColumn.dataBack[i].cl_age90 != 90){
-                pointsColumn.push({ x: (dataColumn.dataBack[i].cl_age90-4), y: dataColumn.dataBack[i].P })
-            }
-        }
-    }
-
+	//If the department is changed, update curve graph
     if(dep != departement.defaultDepartement.value){
 		callServerCurve();
 	}
 
+	//Style of the select to change depending on the theme
     const colourStyles = {
 		control: styles => ({ ...styles, backgroundColor: mode ? 'black' : 'white', width:100, marginBottom: 10}),
 		option: (styles, { data, isDisabled, isFocused, isSelected }) => {

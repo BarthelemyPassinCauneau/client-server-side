@@ -4,7 +4,7 @@ import { GraphColumn } from './GraphColumn'
 import { GraphCurve } from "./GraphCurve";
 
 import { FetchServerColumnData } from "../lib/FetchServerInputData";
-import { stringToArray } from 'ag-grid-community';
+import { Autowired, stringToArray } from 'ag-grid-community';
 
 var pointsCurve = [{x:1, y:1}];
 var pointsColumn = [{x:1, y:1}];
@@ -82,26 +82,29 @@ export const Graph = ({currentDep, mode}) => {
 	}
 
     const colourStyles = {
-		control: styles => ({ ...styles, backgroundColor: mode ? 'black' : 'white', width:100 }),
+		control: styles => ({ ...styles, backgroundColor: mode ? 'black' : 'white', width:100, marginBottom: 10}),
 		option: (styles, { data, isDisabled, isFocused, isSelected }) => {
-			return {
-				...styles,
+			return {...styles,
 				backgroundColor: isSelected ? "#3f51b5" : isFocused ? "#757de8" : mode ? "black" : "white",
 				color: mode ? 'white' : 'black',
 				width: 100
 			};
 		},
-		container: styles => ({...styles, width: 100})
+		container: styles => ({...styles, width: 100}),
+        singleValue: styles => ({...styles, width: 100, color: mode ? 'white' : 'black'})
 	};
 
     return (
-		<div>
+		<div >
             <p>Sélectionnez un département</p>
-			<Select styles={colourStyles} options={departementBase} value={selectedDep} onChange={handleChangeDep} defaultValue = {departement.defaultDepartement} />
-			<p>Sélectionnez une semaine</p>
-			<Select styles={colourStyles} options={semaineBase} value={selectedSem} onChange={handleChangeSem} defaultValue = {semaine.defaultSemaine} />
-			<GraphColumn currentDep={departement.defaultDepartement.value} currentSem={semaine.defaultSemaine.value} mode={mode} input={pointsColumn}/>
-			<br></br>
+            <div style={{display: 'flex',  justifyContent:'center', alignItems:'center'}}>
+                <Select styles={colourStyles} options={departementBase} value={selectedDep} onChange={handleChangeDep} defaultValue = {departement.defaultDepartement} />
+            </div>  
+            <p>Sélectionnez une semaine</p>
+            <div style={{display: 'flex',  justifyContent:'center', alignItems:'center'}}>  
+                <Select styles={colourStyles} options={semaineBase} value={selectedSem} onChange={handleChangeSem} defaultValue = {semaine.defaultSemaine} />
+            </div> 
+            <GraphColumn currentDep={departement.defaultDepartement.value} currentSem={semaine.defaultSemaine.value} mode={mode} input={pointsColumn}/>
 			<GraphCurve currentDep={departement.defaultDepartement.value} mode={mode} input={pointsCurve}/>
 		</div>
 	);

@@ -1,52 +1,48 @@
-import logo from './logo.svg';
-import './App.css';
-import { GraphColumn } from './components/GraphColumn.js';
-import { GraphCurve } from './components/GraphCurve.js';
-import { Grid } from './components/Grid.js';
-import { Map } from './components/Map.js'
-import { BrowserRouter as Router, Switch, Route, Link } from "react-router-dom"
-import { Component } from 'react';
+import './App.scss';
 
-class App extends Component {
+import { Graph } from './components/Graph.js';
+import { Grid } from './components/Grid';
+import { Map } from './components/Map'
+import { DarkModeButton } from './components/DarkModeButton';
 
-  constructor(props) {
-    super(props);
-    this.state = { mapData: [], realtimedata: [{key: ""}], currentDep : 0};
-  }
+import { FetchFranceLiveGlobalData } from "./lib/FetchFranceLiveGlobalData";
+import { FetchLocationUserDep } from "./lib/FetchLocationUserDep";
+import { FetchServerMapData } from "./lib/FetchServerMapData";
+import useLocalStorage from "./lib/useLocalStorage";
 
-  GetDataForMap() {
-    fetch("http://localhost:8080/covid_data/heb/dep?cl_age90=0")
-      .then(res => res.json())
-      .then(res => this.setState({ mapData: res }));
-  }
+import { useState, useCallback, useEffect } from 'react';
+import { BrowserRouter as Router, Switch, Route, Link } from "react-router-dom";
 
-  callRealTimeData() {
-    fetch("https://coronavirusapi-france.now.sh/FranceLiveGlobalData")
-      .then(res => res.json())
-      .then(res => this.setState({ realtimedata: res.FranceGlobalLiveData}));
-  }
+const App = () => {
+  const [mapData, setMapData] = useState([]);
+  const [realtimeData, setRealtimeData] = useState([]);
+  const [locationUserDep, setLocationUserDep] = useState(0);
 
-  GetLocation() {
-    navigator.geolocation.getCurrentPosition(position => {
-      fetch("https://api-adresse.data.gouv.fr/reverse/?lat=" + position.coords.latitude + '&lon=' + position.coords.longitude)
-        .then(location => location.json())
-        .then(location => this.setState({ currentDep: parseInt(location.features[0].properties.context.split(",")[0])}));
-    });
-  }
+  const [displayMode, setDisplayMode] = useLocalStorage('darkmode');
+  useEffect(() => {
+    FetchFranceLiveGlobalData.then(data => setRealtimeData(data));
+  });
+  FetchServerMapData.then(data => setMapData(data));
+  FetchLocationUserDep.then(dep => setLocationUserDep(dep));
 
-  componentWillMount() {
-    this.GetDataForMap();
-    this.callRealTimeData();
-    this.GetLocation();
-  }
-
-  render() {
-    return (
+  const handleChangeMode = useCallback(
+		(e) => {
+			const modeValue = !!e.target.checked;
+			setDisplayMode(modeValue);
+		},
+		[setDisplayMode],
+  );
+  
+  return (
       <Router>
-        <div className="App">
+        <div className={`App ${displayMode ? 'dark' : 'light'}`}>
           <h1>
             Covid-19 Stats
           </h1>
+          <DarkModeButton
+						onChange={handleChangeMode}
+						mode={displayMode}
+					/>
           <Link to="/">
             <button type="button">
               Home
@@ -65,22 +61,16 @@ class App extends Component {
 
           <Switch>
             <Route path="/graph">
-              <GraphColumn currentDep = {this.state.currentDep}/>
-              <GraphCurve currentDep = {this.state.currentDep}/>
-              <Grid data={this.state.realtimedata}/>
+              <Graph currentDep = {locationUserDep} mode={displayMode}/>
             </Route>
             <Route path="/map">
-              <Map data = {this.state.mapData}/>
-              <Grid data={this.state.realtimedata}/>
-            </Route>
-            <Route path="/">
-              <Grid data={this.state.realtimedata}/>
+              <Map data = {mapData}/>
             </Route>
           </Switch>
+          <Grid data={realtimeData} mode={displayMode}/>
         </div>
       </Router>
     );
-  }
-}
+};
 
 export default App;

@@ -1,32 +1,34 @@
-import React, { useState } from 'react';
-import { AgGridColumn, AgGridReact } from 'ag-grid-react';
+import "./Grid.scss";
 
-import 'ag-grid-community/dist/styles/ag-grid.css';
-import 'ag-grid-community/dist/styles/ag-theme-alpine.css';
-
-export const Grid = ({data}) => {
-
-    const [gridApi, setGridApi] = useState(null);
-    const [gridColumnApi, setGridColumnApi] = useState(null);
-
-    const [rowData, setRowData] = useState([
-        { Name: "Cas confirmes", Number: data[0].casConfirmes },
-        { Name: "Deces", Number: data[0].deces },
-        { Name: "Hospitalisés", Number: data[0].hospitalises },
-        { Name: "Reanimation", Number: data[0].reanimation },
-        { Name: "Guéris", Number: data[0].gueris },
-    ]);
-
+export const Grid = ({data, mode}) => {
+    if (data.length > 0) {
+        return (
+            <div className={`Grid ${mode ? 'dark' : 'light'}`}>
+                <table>
+                    <thead>
+                        <tr>
+                            <th colspan="2">Données en France datant du {new Intl.DateTimeFormat('fr-FR', {day: 'numeric', month: 'long', year: 'numeric'}).format(Date.UTC(parseInt(data[0].date.split("-")[0]), parseInt(data[0].date.split("-")[1])-1, parseInt(data[0].date.split("-")[2])))}</th>
+                        </tr>
+                    </thead>
+                    <tr>
+                        <td>Guéris</td>
+                        <td>{`${new Intl.NumberFormat('fr-FR').format(data[0].gueris)}`}</td>
+                    </tr>
+                    <tr>
+                        <td>Décès</td>
+                        <td>{`${new Intl.NumberFormat('fr-FR').format(data[0].deces)}`}</td>
+                    </tr>
+                    <tr>
+                        <td>Hospitalisés</td>
+                        <td>{`${new Intl.NumberFormat('fr-FR').format(data[0].hospitalises)}`}</td>
+                    </tr>
+                </table>
+            </div>
+        );
+    }
     return (
-        <div className="ag-theme-alpine" style={{ height: 270, width: 415 }}>
-            <h2>
-                Données en France du {data[0].date}
-            </h2>
-            <AgGridReact
-                rowData={rowData}>
-                <AgGridColumn field="Name"></AgGridColumn>
-                <AgGridColumn field="Number"></AgGridColumn>
-            </AgGridReact>
-        </div>
-    );
+    <div className={`Grid ${mode ? 'dark' : 'light'}`}>
+        <p>Accès aux données en cours...</p>
+        <div class="loader"></div>
+    </div>);
 };

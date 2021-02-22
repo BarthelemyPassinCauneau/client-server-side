@@ -1,51 +1,53 @@
-import React, { Component } from "react";
-import { render } from "react-dom";
 import CanvasJSReact from '../assets/canvasjs/canvasjs.react';
+
 var CanvasJSChart = CanvasJSReact.CanvasJSChart;
- 
-var dataPoints =[];
-export class GraphCurve extends Component {
-	render() {	
-		const options = {
-			theme: "light2",
+export const GraphCurve = ({currentDep, mode, input}) => {
+	var theme = mode ? "dark2" : "white2"
+	var options = {}
+	
+	if(input.length > 0 && input != undefined && options.data != input){
+		options = {
+			animationEnabled: true,
+			exportEnabled: true,
+			theme: theme,
 			title: {
-				text: "Stock Price of NIFTY 50"
+				text: "Evolution du nombre d'admission pour le département "+currentDep,
+			},
+			axisX: {
+				title: "Semaine"
 			},
 			axisY: {
-				title: "Price in USD",
-				prefix: "$"
+				title: "Nb admission"
 			},
 			data: [{
 				type: "line",
-				xValueFormatString: "MMM YYYY",
-				yValueFormatString: "$#,##0.00",
-				dataPoints: dataPoints
+				dataPoints: input
 			}]
 		}
-		return (
+	} else {
+		options = {
+			animationEnabled: true,
+			exportEnabled: true,
+			theme: theme,
+			title: {
+				text: "Evolution du nombre d'admission pour le département "+currentDep,
+			},
+			axisX: {
+				title: "Semaine"
+			},
+			axisY: {
+				title: "Nb admission"
+			},
+			data: [{
+				type: "line",
+				dataPoints: [{x:1, y:1}]
+			}]
+		}
+	}
+
+	return (
 		<div>
-			<CanvasJSChart options = {options} 
-				 onRef={ref => this.chart = ref}
-			/>
-			{/*You can get reference to the chart instance as shown above using onRef. This allows you to access all chart properties and methods*/}
+			<CanvasJSChart options = {options} />
 		</div>
-		);
-	}
-	
-	componentDidMount(){
-		var chart = this.chart;
-		fetch('https://canvasjs.com/data/gallery/react/nifty-stock-price.json')
-		.then(function(response) {
-			return response.json();
-		})
-		.then(function(data) {
-			for (var i = 0; i < data.length; i++) {
-				dataPoints.push({
-					x: new Date(data[i].x),
-					y: data[i].y
-				});
-			}
-			chart.render();
-		});
-	}
+	);
 }

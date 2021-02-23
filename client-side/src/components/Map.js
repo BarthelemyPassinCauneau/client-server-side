@@ -1,14 +1,14 @@
-import { Component, useState } from 'react';
-import France from '@svg-maps/france.departments';
-import { getLocationName } from '../utils/utils';
-import { SVGMap } from "react-svg-map";
-import './Map.scss'
 
-export const Map = ({data}) => {
-  const [pointedLocation, setPointedLocation] = useState(null);
-  const [tooltipStyle, setTooltipsStyle] = useState({ display: 'none' })
-  const [currentWeek, setCurrentWeek] = useState("2020-S21");
-  const [currentDisplayedData, setCurrentDisplayedData] = useState([]);
+import Switch from '@material-ui/core/Switch';
+import { RegMap } from './RegMap'
+import { DepMap } from './DepMap'
+import { useState } from 'react';
+
+
+export const Map = ({ Dep, Reg, mode }) => {
+  const [check, setCheck] = useState(false);
+
+
   // constructor(props) {
   //   super(props);
 
@@ -23,66 +23,21 @@ export const Map = ({data}) => {
   //   this.handleLocationMouseMove = this.handleLocationMouseMove.bind(this);
   // }
 
-  const UpdateDisplayedData = () => {
-    if(currentDisplayedData.length == 0) {
-      for (let i = 0; i < data.length; i++) {
-        if(data[i].week == currentWeek) {
-          currentDisplayedData.push(data[i]);
-        }
-      }
-    }
-  }
+  const handleChange = () => {
 
-  const handleLocationMouseOver = (event) => {
-    const pointedLocation = getLocationName(event);
-    setPointedLocation(pointedLocation)
   }
+  return (
+    <article className="examples__block">
+      <span>Departements</span>
+      <Switch
+        checked={check}
+        onChange={handleChange}
+        name="checkedA"
+        inputProps={{ 'aria-label': 'secondary checkbox' }}
+      />
+      <DepMap Dep={Dep} mode={mode}></DepMap>
+      <RegMap Reg={Reg} mode={mode}></RegMap>
+    </article>
 
-  const handleLocationMouseOut = () => {
-    setPointedLocation(null)
-    setTooltipsStyle({ display: 'none' })
-  }
-
-  const handleLocationMouseMove = (event) => {
-    const tooltipStyle = {
-      display: 'block',
-      top: event.clientY + 10,
-      left: event.clientX - 100
-    };
-    setTooltipsStyle(tooltipStyle)
-  }
-
-  const getLocationClassName = (location, index) => {
-    UpdateDisplayedData();
-    for (let i = 0; i < currentDisplayedData.length; i++) {
-      if (currentDisplayedData[i].dep == location.id) {
-        if (currentDisplayedData[i].pop <= "250000") return `svg-map__location--heat0`;
-        else if (currentDisplayedData[i].pop <= "500000") return `svg-map__location--heat1`;
-        else if (currentDisplayedData[i].pop <= "750000") return `svg-map__location--heat2`;
-        else return `svg-map__location--heat3`;
-      }
-    }
-  }
-
-  if (data.length > 1) {
-    return (
-      <article className="examples__block">
-        <h2 className="examples__block__title">
-          Nombre de cas Covid par département
-				</h2>
-        <div className="examples__block__map examples__block__map--france">
-          <SVGMap
-            map={France}
-            locationClassName={getLocationClassName}
-            onLocationMouseOver={handleLocationMouseOver}
-            onLocationMouseOut={handleLocationMouseOut}
-            onLocationMouseMove={handleLocationMouseMove} />
-          <div className="examples__block__map__tooltip" style={tooltipStyle}>
-            {pointedLocation}
-          </div>
-        </div>
-      </article>
-    );
-  }
-  return (<div></div>)
+  );
 }

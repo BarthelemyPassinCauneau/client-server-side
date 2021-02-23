@@ -1,10 +1,13 @@
 
-/* Using box model */
 * {
   box-sizing: border-box;
 }
 
-/* Maps examples */
+.slider{
+	width: 60%;
+	margin: auto;
+}
+
 .examples {
 	width: 1000px;
 	margin: 0 auto;
@@ -83,6 +86,9 @@
 				padding: 10px;
 				border: 1px solid darkgray;
 				background-color: white;
+				&.dark{
+					background-color: #30364b;
+				}
 			}
 		}
 	}

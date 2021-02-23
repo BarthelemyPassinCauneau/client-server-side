@@ -1,7 +1,5 @@
 import './App.scss';
 
-import { CasesNumberGraph } from './components/CasesNumberGraph.js';
-import { Grid } from './components/Grid';
 import { Map } from './components/Map';
 import { Home } from './components/Home';
 import { DarkModeButton } from './components/DarkModeButton';
@@ -11,7 +9,7 @@ import { FetchLocationUserDep } from "./lib/FetchLocationUserDep";
 import { FetchServerMapDataDep, FetchServerMapDataReg } from "./lib/FetchServerMapData";
 import useLocalStorage from "./lib/useLocalStorage";
 
-import { useState, useCallback, useEffect } from 'react';
+import { Suspense, lazy, useState, useCallback, useEffect } from 'react';
 import { BrowserRouter as Router, Switch, Route, Link } from "react-router-dom";
 
 const App = () => {
@@ -19,14 +17,31 @@ const App = () => {
   const [mapDataReg, setMapDataReg] = useState([]);
   const [realtimeData, setRealtimeData] = useState([]);
   const [locationUserDep, setLocationUserDep] = useState(0);
-
   const [displayMode, setDisplayMode] = useLocalStorage('darkmode');
+
   useEffect(() => {
     FetchFranceLiveGlobalData.then(data => setRealtimeData(data));
   });
   FetchServerMapDataDep.then(data => setMapDataDep(data));
   FetchServerMapDataReg.then(data => setMapDataReg(data));
-  FetchLocationUserDep.then(dep => setLocationUserDep(dep));
+
+  const Grid = lazy(
+    () => new Promise((resolve, reject) =>
+      FetchFranceLiveGlobalData.then(data => {
+        setRealtimeData(data);
+        resolve(import("./components/Grid"));
+      })
+    )
+  );
+
+  const CasesNumberGraph = lazy(
+    () => new Promise((resolve, reject) =>
+      FetchLocationUserDep.then(dep => {
+        setLocationUserDep(dep);
+        resolve(import("./components/CasesNumberGraph"));
+      })
+    )
+  );
 
   const handleChangeMode = useCallback(
 		(e) => {
@@ -63,17 +78,21 @@ const App = () => {
           </Link>
 
           <Switch>
-            <Route path="/graph">
-              <CasesNumberGraph currentDep = {locationUserDep} mode={displayMode}/>
+            <Route exact path="/">
+              <Home/>
             </Route>
+            <Suspense fallback={<div><p className="loadingText">Localisation en cours</p><div className="loader"></div></div>}>
+              <Route path="/graph">
+                <CasesNumberGraph currentDep = {locationUserDep} mode={displayMode}/>
+              </Route>
+            </Suspense>
             <Route path="/map">
               <Map Dep = {mapDataDep} Reg = {mapDataReg} mode = {displayMode} />
             </Route>
-            <Route path="/">
-              <Home/>
-            </Route>
           </Switch>
-          <Grid data={realtimeData} mode={displayMode}/>
+          <Suspense fallback={<div><p className="loadingText">Accès aux données en direct en cours...</p><div className="loader"></div></div>}>
+            <Grid data={realtimeData} mode={displayMode}/>
+          </Suspense>
         </div>
       </Router>
     );

@@ -13,7 +13,7 @@ var dep = 0;
 var SEM = 21;
 var NB_DEP = 95;
 
-export const CasesNumberGraph = ({currentDep, mode}) => {
+const CasesNumberGraph = ({currentDep, mode}) => {
     const [dataColumn, setDataColumn] = useState({ dataBack : [{key: 0}]});
     const [dataCurve, setDataCurve] = useState({ dataBack : [{key: 0}]});
 	const [departement, setDepartement] = useState({ defaultDepartement : {value : "00", label : "00"}});
@@ -127,3 +127,5 @@ export const CasesNumberGraph = ({currentDep, mode}) => {
 		</div>
 	);
 }
+
+export default CasesNumberGraph;

@@ -2,47 +2,17 @@
     position: absolute;
 	left: 10px;
     top: 10px;
-
-    .loader {
-        margin-left: auto;
-        margin-right: auto;
-        border: 10px solid #8d8d8d;
-        border-radius: 50%;
-        border-top: 10px solid #536dff;
-        width: 50px;
-        height: 50px;
-        -webkit-animation: spin 2s linear infinite; /* Safari */
-        animation: spin 2s linear infinite;
-    }
-
-    @-webkit-keyframes spin {
-        0% { -webkit-transform: rotate(0deg); }
-        100% { -webkit-transform: rotate(360deg); }
-    }
-    
-    @keyframes spin {
-        0% { transform: rotate(0deg); }
-        100% { transform: rotate(360deg); }
-    }
+    color : #536dff;
 
     table, td {
         border: 1px solid #333;
     }
 
     &.dark {
+        color: #c4c734;
         table,
         td {
             border: 1px solid rgb(255, 255, 255);
-        }
-
-        .loader {
-            border: 10px solid #ffffff;
-            border-radius: 50%;
-            border-top: 10px solid #ff0000;
-            width: 50px;
-            height: 50px;
-            -webkit-animation: spin 2s linear infinite; /* Safari */
-            animation: spin 2s linear infinite;
         }
     }
 

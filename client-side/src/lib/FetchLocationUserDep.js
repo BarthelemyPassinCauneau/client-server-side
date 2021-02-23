@@ -11,5 +11,7 @@ export const FetchLocationUserDep = new Promise((resolve, reject) => {
               else 
                 resolve(location.features[0].properties.context.split(",")[0])
             });
+    }, error => {
+      resolve("01");
     });
 });

@@ -5,7 +5,6 @@ export const FetchLocationUserDep = new Promise((resolve, reject) => {
         fetch(API + "?lat=" + position.coords.latitude + '&lon=' + position.coords.longitude)
           .then(location => location.json())
           .then(location => {
-            console.log(location);
               if(location.features.length == 0)
                 resolve("01")
               else 

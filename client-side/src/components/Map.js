@@ -5,9 +5,8 @@ import { DepMap } from './DepMap'
 import { useState } from 'react';
 
 
-export const Map = ({ Dep, Reg, mode }) => {
+const Map = ({ Dep, Reg, RegId, mode }) => {
   const [check, setCheck] = useState(false);
-
 
   // constructor(props) {
   //   super(props);
@@ -35,9 +34,12 @@ export const Map = ({ Dep, Reg, mode }) => {
         name="checkedA"
         inputProps={{ 'aria-label': 'secondary checkbox' }}
       />
-      <DepMap Dep={Dep} mode={mode}></DepMap>
-      <RegMap Reg={Reg} mode={mode}></RegMap>
+      <span>Régions</span>
+      <DepMap Dep={Dep} RegId={RegId} mode={mode} ></DepMap>
+      <RegMap Reg={Reg} RegId={RegId} mode={mode}></RegMap>
     </article>
 
   );
 }
+
+export default Map;

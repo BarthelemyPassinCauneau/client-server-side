@@ -14,7 +14,7 @@ const useStyles = makeStyles({
 });
 
 
-export const DepMap = ({ Dep, mode }) => {
+export const DepMap = ({ Dep, RegId, mode }) => {
   const classes = useStyles();
 
   const [pointedLocationData, setPointedLocationData] = useState(null);
@@ -23,14 +23,8 @@ export const DepMap = ({ Dep, mode }) => {
   const [currentWeek, setCurrentWeek] = useState("2020-S21");
   const [currentDisplayedData, setCurrentDisplayedData] = useState([]);
   const [currentWeekNumber, setCurrentWeekNumber] = useState(21)
-  const [regsId, setRegsId] = useState()
   let data = Dep;
   let type = "dep"
-  const regsIdAPI = new Promise((resolve, reject) => {
-    fetch("http://localhost:8080/regions")
-      .then(res => res.json())
-      .then(res => resolve(res));
-  }).then(res => setRegsId(res))
 
 
   // constructor(props) {
@@ -47,7 +41,7 @@ export const DepMap = ({ Dep, mode }) => {
   //   this.handleLocationMouseMove = this.handleLocationMouseMove.bind(this);
   // }
 
-  if (data.length > 1 && regsId) {
+  if (RegId) {
 
     const UpdateDisplayedData = () => {
       if (currentDisplayedData.length == 0) {
@@ -71,7 +65,7 @@ export const DepMap = ({ Dep, mode }) => {
     const handleLocationMouseOver = (event) => {
       const pointedLocation = getLocationName(event);
       for (let i = 0; i < currentDisplayedData.length; i++) {
-        if (currentDisplayedData[i][type] == (type == "reg" ? regsId[0][getLocationId(event)] : getLocationId(event))) {
+        if (currentDisplayedData[i][type] == (type == "reg" ? RegId[0][getLocationId(event)] : getLocationId(event))) {
           setPointedLocationData(currentDisplayedData[i].P)
         }
       }
@@ -96,7 +90,7 @@ export const DepMap = ({ Dep, mode }) => {
     const getLocationClassName = (location, index) => {
       UpdateDisplayedData();
       for (let i = 0; i < currentDisplayedData.length; i++) {
-        if (currentDisplayedData[i][type] == (type == "reg" ? regsId[0][location.id] : location.id)) {
+        if (currentDisplayedData[i][type] == (type == "reg" ? RegId[0][location.id] : location.id)) {
           let ratio = currentDisplayedData[i].P / currentDisplayedData[i].pop;
           if (ratio <= 0.000625) return `svg-map__location--heat0`;
           else if (ratio <= 0.00125) return `svg-map__location--heat1`;
@@ -109,7 +103,6 @@ export const DepMap = ({ Dep, mode }) => {
 
     return (
       <article className="examples__block">
-        <span>Departements</span>
           <div className="departements">
             <h2 className="examples__block__title">
               Nombre de cas Covid par département

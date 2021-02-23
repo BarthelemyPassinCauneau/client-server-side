@@ -41,6 +41,12 @@
     animation: spin 2s linear infinite;
   }
 
+  .loadGrid {
+    position: absolute;
+    left: 10px;
+    top: 10px;
+  }
+
   //DARK MODE
   &.dark {
     background-color: #30364b;
@@ -50,14 +56,16 @@
       color : #c4c734;
     }
     
-    .loader {
+    .loader, .loaderGrid {
       border: 10px solid #686868;
-      border-radius: 50%;
       border-top: 10px solid #c4c734;
-      width: 50px;
-      height: 50px;
-      -webkit-animation: spin 2s linear infinite; /* Safari */
-      animation: spin 2s linear infinite;
+    }
+  }
+
+  //Responsive loader grid
+  @media screen and (max-width: 1000px) {
+    .loadGrid {
+      position: initial;
     }
   }
 }

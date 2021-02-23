@@ -90,7 +90,7 @@ const App = () => {
               <Map Dep = {mapDataDep} Reg = {mapDataReg} mode = {displayMode} />
             </Route>
           </Switch>
-          <Suspense fallback={<div><p className="loadingText">Accès aux données en direct en cours...</p><div className="loader"></div></div>}>
+          <Suspense fallback={<div className="loadGrid"><p className="loadingText">Accès aux données en direct en cours...</p><div className="loader"></div></div>}>
             <Grid data={realtimeData} mode={displayMode}/>
           </Suspense>
         </div>

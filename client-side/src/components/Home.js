@@ -8,6 +8,7 @@ export const Home = () => {
                 <li>Données du tableau : OpenCOVID19-fr</li>
                 <li>Données des graphes et de la carte : Système d’Informations de DEPistage (SI-DEP)</li>
             </ul>
+            <h4>Projet réalisé par : CHOQUARD Anthony, FAFET Théo, PASSIN-CAUNEAU Barthélemy, ROBERT Florent</h4>
         </div>
     )
 }

@@ -17,10 +17,15 @@ const App = () => {
   const [mapDataReg, setMapDataReg] = useState([]);
   const [realtimeData, setRealtimeData] = useState([]);
   const [locationUserDep, setLocationUserDep] = useState(0);
+  const [init, setInit] = useState(true);
   const [displayMode, setDisplayMode] = useLocalStorage('darkmode');
 
   useEffect(() => {
     FetchFranceLiveGlobalData.then(data => setRealtimeData(data));
+    if(init && window.matchMedia("(prefers-color-scheme: dark)").matches) {
+      setDisplayMode(true);
+      setInit(false);
+    }
   });
   FetchServerMapDataDep.then(data => setMapDataDep(data));
   FetchServerMapDataReg.then(data => setMapDataReg(data));
@@ -45,7 +50,7 @@ const App = () => {
 
   const handleChangeMode = useCallback(
 		(e) => {
-			const modeValue = !!e.target.checked;
+      const modeValue = !!e.target.checked;
 			setDisplayMode(modeValue);
 		},
 		[setDisplayMode],

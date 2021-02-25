@@ -11,5 +11,5 @@ export const Home = () => {
             </ul>
             <h4>Projet réalisé par : CHOQUARD Anthony, FAFET Théo, PASSIN-CAUNEAU Barthélemy, ROBERT Florent</h4>
         </div>
-    )
+    );
 }

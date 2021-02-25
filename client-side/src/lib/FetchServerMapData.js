@@ -16,6 +16,6 @@ export const FetchServerMapDataReg = new Promise((resolve, reject) => {
 
 export const FetchRegsId = new Promise((resolve, reject) => {
     fetch(APIRegId)
-      .then(res => res.json())
-      .then(res => resolve(res));
-  });
+        .then(res => res.json())
+        .then(res => resolve(res));
+});

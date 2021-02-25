@@ -1,28 +1,28 @@
-import { Component, useState, Suspense, lazy } from 'react';
-import Select from 'react-select'
+import { useState, Suspense, lazy } from 'react';
+import Select from 'react-select';
 import { FetchServerInputData } from "../lib/FetchServerInputData";
 
-var pointsCurve = [];
-var pointsColumn = [];
-var semaineBase = [];
-var dep = 0;
-var SEM = 21;
-var NB_DEP = 95;
-var GraphColumn = null;
-var GraphCurve = null;
+let pointsCurve = [];
+let pointsColumn = [];
+let semaineBase = [];
+let dep = 0;
+let SEM = 21;
+let NB_DEP = 95;
+let GraphColumn = null;
+let GraphCurve = null;
 const CasesNumberGraph = ({currentDep, mode}) => {
     const [dataColumn, setDataColumn] = useState({ dataBack : [{key: 0}]});
     const [dataCurve, setDataCurve] = useState({ dataBack : [{key: 0}]});
 	const [departement, setDepartement] = useState({ defaultDepartement : {value : "00", label : "00"}});
 	const [semaine, setSemaine] = useState({ defaultSemaine : {value : SEM.toString(), label : SEM.toString()}});
-	var {selectedSem} = semaine.defaultSemaine.value;
-	var {selectedDep} = departement.defaultDepartement.value;
+	let {selectedSem} = semaine.defaultSemaine.value;
+	let {selectedDep} = departement.defaultDepartement.value;
 
     //Set the departement options in the select
 	const departementBase = [];
-    for(var i = 1; i <= NB_DEP; i++){
-        var val = i>9 ? ''+i.toString() : '0'+i.toString()
-        departementBase.push({value : val, label: val})
+    for(let i = 1; i <= NB_DEP; i++){
+        let val = i>9 ? ''+i.toString() : '0'+i.toString();
+        departementBase.push({value : val, label: val});
     }
 
 	//Set the department with the department of the user and do the first request
@@ -49,9 +49,9 @@ const CasesNumberGraph = ({currentDep, mode}) => {
 
 	//Update column graph with promise result
 	const updateColumnGraph = (data) => {
-		for(var i = 0; i<11; i++){  
+		for(let i = 0; i<11; i++){  
 			if(data[i].cl_age90 != 0 && data[i].cl_age90 != 1 && data[i].cl_age90 != 90){
-				pointsColumn.push({ x: (data[i].cl_age90-4), y: data[i].P })
+				pointsColumn.push({ x: (data[i].cl_age90-4), y: data[i].P });
 			}
 		}
 		setDataColumn({dataBack : data});
@@ -60,10 +60,10 @@ const CasesNumberGraph = ({currentDep, mode}) => {
 	//Update curve graph with promise result
 	const updateCurveGraph = (data) => {
 		data.forEach(element => {
-			val = parseInt(element.week.split("S")[1], 10)
+			let val = parseInt(element.week.split("S")[1], 10)
 			if(element.cl_age90 == 0 && val >= SEM){
 				pointsCurve.push({ x: val, y: element.P });
-				semaineBase.push({value: val, label: val})
+				semaineBase.push({value: val, label: val});
 			}
 		});
 		pointsCurve.sort((a, b)=> a.x - b.x);
@@ -87,8 +87,8 @@ const CasesNumberGraph = ({currentDep, mode}) => {
 	//Call to the back to get number of cases per age range for a given week and department number
 	const callServerColumn = (sem, dep) => {
 		pointsColumn = [];
-		let path = "http://localhost:8080/covid_data/heb/dep?week=2020-S"+sem+"&dep="+dep
-		FetchServerInputData(path).then(data => {updateColumnGraph(data)})
+		let path = "http://localhost:8080/covid_data/heb/dep?week=2020-S"+sem+"&dep="+dep;
+		FetchServerInputData(path).then(data => {updateColumnGraph(data)});
 	}
 	
 	//Call to the back to get total number of cases of all the department for a given week number

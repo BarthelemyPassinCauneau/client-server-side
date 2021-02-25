@@ -1,12 +1,10 @@
 import CanvasJSReact from '../assets/canvasjs/canvasjs.react';
 
-var CanvasJSChart = CanvasJSReact.CanvasJSChart;
+let CanvasJSChart = CanvasJSReact.CanvasJSChart;
 
 const GraphColumn = ({currentDep, currentSem, mode, input, title, titleX, titleY}) => {	
-	var theme = mode ? "dark2" : "white2"
-	var options = {}
-
-	options = {
+	let theme = mode ? "dark2" : "white2";
+	let options = {
 		animationEnabled: true,
 		exportEnabled: true,
 		theme: theme, 
@@ -26,7 +24,7 @@ const GraphColumn = ({currentDep, currentSem, mode, input, title, titleX, titleY
 			indexLabelPlacement: "outside",
 			dataPoints: input
 		}]
-	}
+	};
 
 	return (
 		<div>

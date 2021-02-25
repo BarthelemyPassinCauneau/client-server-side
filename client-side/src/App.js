@@ -8,7 +8,7 @@ import { FetchLocationUserDep } from "./lib/FetchLocationUserDep";
 import { FetchServerMapDataDep, FetchServerMapDataReg, FetchRegsId } from "./lib/FetchServerMapData";
 import useLocalStorage from "./lib/useLocalStorage";
 
-import { Suspense, lazy, useState, useCallback, useEffect } from 'react';
+import { Suspense, lazy, useState, useEffect } from 'react';
 import { BrowserRouter as Router, Switch, Route, Link } from "react-router-dom";
 
 const App = () => {
@@ -36,7 +36,7 @@ const App = () => {
         setMapDataReg(dataReg);
         FetchRegsId.then(dataId => {
           setMapRegId(dataId);
-          resolve(import('./components/Map'))
+          resolve(import('./components/Map'));
         });
       });
     })
@@ -61,13 +61,9 @@ const App = () => {
     )
   );
 
-  const handleChangeMode = useCallback(
-    (e) => {
-      const modeValue = !!e.target.checked;
-      setDisplayMode(modeValue);
-    },
-    [setDisplayMode],
-  );
+  const handleChangeMode = (event) => {
+      setDisplayMode(!displayMode);
+  };
 
   return (
     <Router>

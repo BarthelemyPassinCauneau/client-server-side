@@ -74,25 +74,25 @@ const App = () => {
       <div className={`App ${displayMode ? 'dark' : 'light'}`}>
         <h1>
           Covid-19 Stats
-          </h1>
+        </h1>
         <DarkModeButton
           onChange={handleChangeMode}
           mode={displayMode}
         />
         <Link to="/">
           <button type="button">
-            Home
-            </button>
+            Accueil
+          </button>
         </Link>
         <Link to="/graph">
           <button type="button">
-            Graph
-            </button>
+            Statistiques
+          </button>
         </Link>
         <Link to="/map">
           <button type="button">
-            Map
-            </button>
+            Carte
+          </button>
         </Link>
 
         <Switch>

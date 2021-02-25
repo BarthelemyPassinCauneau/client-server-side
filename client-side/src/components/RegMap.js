@@ -3,6 +3,7 @@ import FranceR from '@svg-maps/france.regions';
 import { getLocationId, getLocationName } from '../utils/utils';
 import { SVGMap } from "react-svg-map";
 import './Map.scss'
+import { Legend } from './Legend'
 import { makeStyles } from '@material-ui/core/styles';
 import Typography from '@material-ui/core/Typography';
 import Slider from '@material-ui/core/Slider';
@@ -105,9 +106,10 @@ export const RegMap = ({ Reg, RegId, mode }) => {
       <article className="examples__block">
         <div className="regions">
           <h2 className="examples__block__title">
-            Nombre de cas Covid par région
+            Taux de cas Covid par région
           </h2>
           <div className="examples__block__map examples__block__map--france">
+          <Legend/>
             <SVGMap
               map={FranceR}
               locationClassName={getLocationClassName}
@@ -123,14 +125,14 @@ export const RegMap = ({ Reg, RegId, mode }) => {
         </div>
         <div className="slider">
           <Slider
-            defaultValue={21}
+            defaultValue={40}
             getAriaValueText={valuetext}
             aria-labelledby="discrete-slider"
             valueLabelDisplay="auto"
             step={1}
             marks
             min={21}
-            max={52}
+            max={53}
           />
         </div>
       </article>

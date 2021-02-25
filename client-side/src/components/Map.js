@@ -37,7 +37,7 @@ const Map = ({ Dep, Reg, RegId, mode }) => {
   }
   return (
     <article className="examples__block">
-      <span>Departements</span>
+      <span>Départements</span>
       <Switch
         checked={check}
         onChange={handleChange}

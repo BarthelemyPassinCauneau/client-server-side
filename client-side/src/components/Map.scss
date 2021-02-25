@@ -57,8 +57,12 @@
 				width: 800px;
 
 				.svg-map__location {
-					&--heat0 {
+					&--heat-1 {
 						fill: lightgreen;
+					}
+					
+					&--heat0 {
+						fill: rgb(208, 255, 1);
 					}
 
 					&--heat1 {
@@ -70,6 +74,10 @@
 					}
 
 					&--heat3 {
+						fill: rgb(255, 102, 0);
+					}
+					
+					&--heat4 {
 						fill: red;
 					}
 

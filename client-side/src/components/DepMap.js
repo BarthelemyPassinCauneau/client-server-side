@@ -91,10 +91,12 @@ export const DepMap = ({ Dep, RegId, mode }) => {
       for (let i = 0; i < currentDisplayedData.length; i++) {
         if (currentDisplayedData[i][type] == (type == "reg" ? RegId[0][location.id] : location.id)) {
           let ratio = currentDisplayedData[i].P / currentDisplayedData[i].pop;
-          if (ratio <= 0.000625) return `svg-map__location--heat0`;
+          if (ratio <= 0.0003125) return `svg-map__location--heat-1`;
+          else if (ratio <= 0.000625) return `svg-map__location--heat0`;
           else if (ratio <= 0.00125) return `svg-map__location--heat1`;
           else if (ratio <= 0.0025) return `svg-map__location--heat2`;
-          else return `svg-map__location--heat3`;
+          else if (ratio <= 0.003125) return `svg-map__location--heat3`;
+          else return `svg-map__location--heat4`;
         }
       }
     }
@@ -122,6 +124,7 @@ export const DepMap = ({ Dep, RegId, mode }) => {
           <span>{pointedLocationData}</span>
         </div>
         <div className="slider">
+          <span>Semaine {currentWeekNumber}</span>
           <Slider
             defaultValue={40}
             getAriaValueText={valuetext}

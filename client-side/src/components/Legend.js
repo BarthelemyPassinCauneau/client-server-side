@@ -11,20 +11,28 @@ export const Legend = () => {
                 </thead>
                 <tbody>
                     <tr>
-                        <td className="warning_high">  </td>
-                        <td>&gt; 2,5‰</td>
+                        <td className="warning_5">  </td>
+                        <td>&gt; 3,125‰</td>
                     </tr>
                     <tr>
-                        <td className="warning_medium">  </td>
+                        <td className="warning_4">  </td>
+                        <td>&lt; 3,125‰</td>
+                    </tr>
+                    <tr>
+                        <td className="warning_3">  </td>
                         <td>&lt; 2,5‰</td>
                     </tr>
                     <tr>
-                        <td className="warning_low">  </td>
+                        <td className="warning_2">  </td>
                         <td>&lt; 1,25‰</td>
                     </tr>
                     <tr>
-                        <td className="warning_very_low">  </td>
+                        <td className="warning_1">  </td>
                         <td>&lt; 0.625‰</td>
+                    </tr>
+                    <tr>
+                        <td className="warning_0">  </td>
+                        <td>&lt; 0.3125‰</td>
                     </tr>
                 </tbody>
             </table>

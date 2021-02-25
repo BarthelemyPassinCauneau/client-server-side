@@ -6,7 +6,9 @@ import { useState } from 'react';
 
 
 const Map = ({ Dep, Reg, RegId, mode }) => {
-  const [check, setCheck] = useState(false);
+  var check
+  var regionMap = false
+  const [mapType, setMapType] = useState(false)
 
   // constructor(props) {
   //   super(props);
@@ -21,9 +23,17 @@ const Map = ({ Dep, Reg, RegId, mode }) => {
   //   this.handleLocationMouseOut = this.handleLocationMouseOut.bind(this);
   //   this.handleLocationMouseMove = this.handleLocationMouseMove.bind(this);
   // }
-
-  const handleChange = () => {
-
+  const mapSwitch = () => {
+    if(mapType){
+      console.log("yata")
+      return(<RegMap Reg={Reg} RegId={RegId} mode={mode}></RegMap>)
+    }else if(!mapType){
+      console.log("hello")
+      return(<DepMap style={{ display: (regionMap ? 'block' : 'none')}} Dep={Dep} RegId={RegId} mode={mode} ></DepMap>)
+    }
+  }
+  const handleChange = (event) => {
+    setMapType(!mapType)
   }
   return (
     <article className="examples__block">
@@ -35,10 +45,8 @@ const Map = ({ Dep, Reg, RegId, mode }) => {
         inputProps={{ 'aria-label': 'secondary checkbox' }}
       />
       <span>Régions</span>
-      <DepMap Dep={Dep} RegId={RegId} mode={mode} ></DepMap>
-      <RegMap Reg={Reg} RegId={RegId} mode={mode}></RegMap>
+      {mapSwitch()}
     </article>
-
   );
 }
 

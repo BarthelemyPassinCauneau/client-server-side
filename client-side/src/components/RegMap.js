@@ -43,8 +43,6 @@ export const RegMap = ({ Reg, RegId, mode }) => {
   //   this.handleLocationMouseMove = this.handleLocationMouseMove.bind(this);
   // }
 
-  if (RegId) {
-
     const UpdateDisplayedData = () => {
       if (currentDisplayedData.length == 0) {
         for (let i = 0; i < data.length; i++) {
@@ -139,5 +137,3 @@ export const RegMap = ({ Reg, RegId, mode }) => {
 
     );
   }
-  return (<div></div>)
-}

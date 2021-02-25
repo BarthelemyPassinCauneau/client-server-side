@@ -1,18 +1,15 @@
-import { Component, useState } from 'react';
+import { Component, useState, Suspense, lazy } from 'react';
 import Select from 'react-select'
-import { GraphColumn } from './GraphColumn'
-import { GraphCurve } from "./GraphCurve";
+import { FetchServerInputData } from "../lib/FetchServerInputData";
 
-import { FetchServerColumnData } from "../lib/FetchServerInputData";
-import { Autowired, stringToArray } from 'ag-grid-community';
-
-var pointsCurve = [{x:1, y:1}];
-var pointsColumn = [{x:1, y:1}];
+var pointsCurve = [];
+var pointsColumn = [];
 var semaineBase = [];
 var dep = 0;
 var SEM = 21;
 var NB_DEP = 95;
-
+var GraphColumn = null;
+var GraphCurve = null;
 const CasesNumberGraph = ({currentDep, mode}) => {
     const [dataColumn, setDataColumn] = useState({ dataBack : [{key: 0}]});
     const [dataCurve, setDataCurve] = useState({ dataBack : [{key: 0}]});
@@ -28,30 +25,36 @@ const CasesNumberGraph = ({currentDep, mode}) => {
         departementBase.push({value : val, label: val})
     }
 
-	//Call to the back to get number of cases per age range for a given week and department number
-    const callServerColumn = (sem, dep) => {
-		let path = "http://localhost:8080/covid_data/heb/dep?week=2020-S"+sem+"&dep="+dep
-		FetchServerColumnData(path).then(data => {updateColumnGraph(data)});
+	//Set the department with the department of the user and do the first request
+	if(departement.defaultDepartement.value == "00" && currentDep != 0){
+		departement.defaultDepartement.value = currentDep;
+		departement.defaultDepartement.label = currentDep;
 	}
 
-	//Call to the back to get total number of cases of all the department for a given week number
-    const callServerCurve = () =>{
-		pointsCurve = [];
-        semaineBase= [];
-		dep = departement.defaultDepartement.value;
-		let path = "http://localhost:8080/covid_data/heb/dep?dep="+departement.defaultDepartement.value;
-        FetchServerColumnData(path).then(data => {updateCurveGraph(data)});
-	}
+	if(GraphColumn == null) GraphColumn = lazy(
+		() => new Promise((resolve, reject) =>
+		FetchServerInputData("http://localhost:8080/covid_data/heb/dep?week=2020-S"+SEM+"&dep="+currentDep).then(data => {
+			updateColumnGraph(data);
+			resolve(import("./GraphColumn"));
+		}))
+	);
+
+	if(GraphCurve == null) GraphCurve = lazy(
+		() => new Promise((resolve, reject) =>
+		FetchServerInputData("http://localhost:8080/covid_data/heb/dep?dep="+currentDep).then(data => {
+			updateCurveGraph(data);
+			resolve(import("./GraphCurve"));
+		}))
+	);
 
 	//Update column graph with promise result
 	const updateColumnGraph = (data) => {
-		pointsColumn = [];
 		for(var i = 0; i<11; i++){  
 			if(data[i].cl_age90 != 0 && data[i].cl_age90 != 1 && data[i].cl_age90 != 90){
 				pointsColumn.push({ x: (data[i].cl_age90-4), y: data[i].P })
 			}
 		}
-		setDataColumn({dataBack : data})
+		setDataColumn({dataBack : data});
 	}
 
 	//Update curve graph with promise result
@@ -68,13 +71,6 @@ const CasesNumberGraph = ({currentDep, mode}) => {
 		setDataCurve({dataBack : [{key: 0}]});
 	}
 
-	//Set the department with the department of the user and do the first request
-    if(departement.defaultDepartement.value == "00" && currentDep != 0){
-		callServerColumn(SEM, currentDep)
-		departement.defaultDepartement.value = currentDep;
-		departement.defaultDepartement.label = currentDep;
-	}
-
 	//Do a call to the back for column graph when the week select is changed
     const handleChangeSem = defaultSemaine => {
 		callServerColumn(defaultSemaine.value, departement.defaultDepartement.value);
@@ -84,12 +80,24 @@ const CasesNumberGraph = ({currentDep, mode}) => {
 	//Do a call to the back for column graph when the department select is changed
 	const handleChangeDep = defaultDepartement => {
 		callServerColumn(semaine.defaultSemaine.value, defaultDepartement.value);
+		callServerCurve();
 		setDepartement({ defaultDepartement });
 	};
 
-	//If the department is changed, update curve graph
-    if(dep != departement.defaultDepartement.value){
-		callServerCurve();
+	//Call to the back to get number of cases per age range for a given week and department number
+	const callServerColumn = (sem, dep) => {
+		pointsColumn = [];
+		let path = "http://localhost:8080/covid_data/heb/dep?week=2020-S"+sem+"&dep="+dep
+		FetchServerInputData(path).then(data => {updateColumnGraph(data)})
+	}
+	
+	//Call to the back to get total number of cases of all the department for a given week number
+	const callServerCurve = () =>{
+		pointsCurve = [];
+		semaineBase= [];
+		dep = departement.defaultDepartement.value;
+		let path = "http://localhost:8080/covid_data/heb/dep?dep="+departement.defaultDepartement.value;
+		FetchServerInputData(path).then(data => {updateCurveGraph(data);})
 	}
 
 	//Style of the select to change depending on the theme
@@ -108,6 +116,7 @@ const CasesNumberGraph = ({currentDep, mode}) => {
 
     return (
 		<div >
+			<Suspense fallback={<div><p className="loadingText">Réception en cours</p><div className="loader"></div></div>}>
             <p>Sélectionnez un département</p>
             <div style={{display: 'flex',  justifyContent:'center', alignItems:'center'}}>
                 <Select styles={colourStyles} options={departementBase} value={selectedDep} onChange={handleChangeDep} defaultValue = {departement.defaultDepartement} />
@@ -116,14 +125,17 @@ const CasesNumberGraph = ({currentDep, mode}) => {
             <div style={{display: 'flex',  justifyContent:'center', alignItems:'center'}}>  
                 <Select styles={colourStyles} options={semaineBase} value={selectedSem} onChange={handleChangeSem} defaultValue = {semaine.defaultSemaine} />
             </div> 
-            <GraphColumn currentDep={departement.defaultDepartement.value} currentSem={semaine.defaultSemaine.value} mode={mode} input={pointsColumn}
-                title={"Nombre de cas par tranche d'âge dans le département "+departement.defaultDepartement.value+" lors de la semaine "+semaine.defaultSemaine.value} 
-                titleX={"Tranche d'âge"} 
-                titleY={"Nb de cas"}/>
-			<GraphCurve currentDep={departement.defaultDepartement.value} mode={mode} input={pointsCurve}
-                title={"Evolution du nombre de cas par semaine pour le département "+departement.defaultDepartement.value} 
-                titleX={"Semaine"} 
-                titleY={"Nb de cas"}/>
+            	<GraphColumn currentDep={departement.defaultDepartement.value} currentSem={semaine.defaultSemaine.value} mode={mode} input={pointsColumn}
+                	title={"Nombre de cas par tranche d'âge dans le département "+departement.defaultDepartement.value+" lors de la semaine "+semaine.defaultSemaine.value} 
+                	titleX={"Tranche d'âge"} 
+                	titleY={"Nb de cas"}/>
+			</Suspense>
+			<Suspense fallback={<div><p className="loadingText">Réception en cours</p><div className="loader"></div></div>}>
+				<GraphCurve currentDep={departement.defaultDepartement.value} mode={mode} input={pointsCurve}
+                	title={"Evolution du nombre de cas par semaine pour le département "+departement.defaultDepartement.value} 
+                	titleX={"Semaine"} 
+                	titleY={"Nb de cas"}/>
+			</Suspense>
 		</div>
 	);
 }

@@ -8,7 +8,6 @@ import { makeStyles } from '@material-ui/core/styles';
 import Typography from '@material-ui/core/Typography';
 import Slider from '@material-ui/core/Slider';
 import Switch from '@material-ui/core/Switch';
-
 const useStyles = makeStyles({
   root: {
     width: 300,
@@ -44,6 +43,9 @@ export const RegMap = ({ Reg, RegId, mode }) => {
   //   this.handleLocationMouseMove = this.handleLocationMouseMove.bind(this);
   // }
 
+    const getDateOfWeek = () => {
+      
+    }
     const UpdateDisplayedData = () => {
       if (currentDisplayedData.length == 0) {
         for (let i = 0; i < data.length; i++) {

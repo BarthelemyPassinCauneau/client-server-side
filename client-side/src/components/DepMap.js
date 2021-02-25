@@ -17,15 +17,20 @@ const useStyles = makeStyles({
 
 export const DepMap = ({ Dep, RegId, mode }) => {
   const classes = useStyles();
-
+  let data = Dep;
+  let type = "dep"
+  const year = 2020
+  const monthNames = ["Janvier", "Fevrier", "Mars", "Avril", "Mai", "Juin",
+  "Juillet", "Août", "Septembre", "Octobre", "Novembre", "Decembre"];
   const [pointedLocationData, setPointedLocationData] = useState(null);
   const [pointedLocation, setPointedLocation] = useState(null);
   const [tooltipStyle, setTooltipsStyle] = useState({ display: 'none' })
   const [currentWeek, setCurrentWeek] = useState("2020-S21");
   const [currentDisplayedData, setCurrentDisplayedData] = useState([]);
   const [currentWeekNumber, setCurrentWeekNumber] = useState(21)
-  let data = Dep;
-  let type = "dep"
+  const [displayedDate, setDisplayedDate] = useState({day: 28, month: 8})
+
+
 
 
   // constructor(props) {
@@ -53,10 +58,18 @@ export const DepMap = ({ Dep, RegId, mode }) => {
       }
     }
 
+    const getDateOfWeek = (w, y) => {
+      var d = (1 + (w - 1) * 7);
+      return new Date(y, 0, d);
+  }
+
     const valuetext = (value) => {
       if (currentWeekNumber != value) {
         setCurrentWeekNumber(value)
         setCurrentWeek("2020-S" + value)
+        let date = getDateOfWeek(value, year)
+        setDisplayedDate({day: date.getDate(), month: date.getMonth()})
+        console.log(monthNames[displayedDate.month])
         setCurrentDisplayedData([])
       }
     }
@@ -124,7 +137,7 @@ export const DepMap = ({ Dep, RegId, mode }) => {
           <span>{pointedLocationData}</span>
         </div>
         <div className="slider">
-          <span>Semaine {currentWeekNumber}</span>
+        <span>Semaine du {displayedDate.day} {monthNames[displayedDate.month]}</span>
           <Slider
             defaultValue={40}
             getAriaValueText={valuetext}

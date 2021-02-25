@@ -29,7 +29,7 @@ const Map = ({ Dep, Reg, RegId, mode }) => {
       return(<RegMap Reg={Reg} RegId={RegId} mode={mode}></RegMap>)
     }else if(!mapType){
       console.log("hello")
-      return(<DepMap style={{ display: (regionMap ? 'block' : 'none')}} Dep={Dep} RegId={RegId} mode={mode} ></DepMap>)
+      return(<DepMap Dep={Dep} RegId={RegId} mode={mode} ></DepMap>)
     }
   }
   const handleChange = (event) => {

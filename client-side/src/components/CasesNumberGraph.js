@@ -116,6 +116,7 @@ const CasesNumberGraph = ({currentDep, mode}) => {
 
     return (
 		<div >
+			<Suspense fallback={<div><p className="loadingText">Réception en cours</p><div className="loader"></div></div>}>
             <p>Sélectionnez un département</p>
             <div style={{display: 'flex',  justifyContent:'center', alignItems:'center'}}>
                 <Select styles={colourStyles} options={departementBase} value={selectedDep} onChange={handleChangeDep} defaultValue = {departement.defaultDepartement} />
@@ -124,7 +125,6 @@ const CasesNumberGraph = ({currentDep, mode}) => {
             <div style={{display: 'flex',  justifyContent:'center', alignItems:'center'}}>  
                 <Select styles={colourStyles} options={semaineBase} value={selectedSem} onChange={handleChangeSem} defaultValue = {semaine.defaultSemaine} />
             </div> 
-			<Suspense fallback={<div><p className="loadingText">Réception en cours</p><div className="loader"></div></div>}>
             	<GraphColumn currentDep={departement.defaultDepartement.value} currentSem={semaine.defaultSemaine.value} mode={mode} input={pointsColumn}
                 	title={"Nombre de cas par tranche d'âge dans le département "+departement.defaultDepartement.value+" lors de la semaine "+semaine.defaultSemaine.value} 
                 	titleX={"Tranche d'âge"} 

@@ -68,19 +68,27 @@ developper mode, not the build version.
 echo fs.inotify.max_user_watches=32768 | sudo tee -a /etc/sysctl.conf
 ```
 
+## Architecture
+The architecture of the client-side part is based on this model. It contains :
+- a component folder who contains all of the differents components to display
+- a lib folder who contais all of the fetch data to external API and server-side required by the components
+- a main module App who display the components and manage routes
+
+The main module use Lazy imports to fetch the data needed and then display the components. Most of them only returns a render but the Map and Graph component need some compute to do with the data before the render so they have their own behaviour. They are based on the same architecture : they both display a main component (for exemple the dropdowns for Graph), filter the data they need and finally display their childs components (Graph Column and Curve).
+
 ## Contributions
 
 - Anthony Choquard:
-  - The map visualisation in the front-end folder
+  - Map visualisation in the front-end folder
 
 - Théo Fafet:
   - Routes and filtering on back-end
 
 - Barthélemy Passin-Cauneau:
   - Live-data table
-  - Dark mode + Lazy imports + Detect user location
+  - Dark mode + Responsive App + Lazy imports + Detect user location
   - Initial setup on back-end
   - Setup MongoDB
   
-- Florent David:
+- Florent Robert:
   - Graph and curves visualisation

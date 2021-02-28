@@ -1,0 +1,28 @@
+.Grid {
+    position: absolute;
+	left: 10px;
+    top: 10px;
+    color : #536dff;
+
+    table, td {
+        border: 1px solid #333;
+    }
+
+    &.dark {
+        color: #c4c734;
+        table,
+        td {
+            border: 1px solid rgb(255, 255, 255);
+        }
+    }
+
+    @media screen and (max-width: 1000px) {
+        position: initial;
+
+        table, td {
+            margin-left: auto;
+            margin-right: auto;
+        }
+    }
+    
+}

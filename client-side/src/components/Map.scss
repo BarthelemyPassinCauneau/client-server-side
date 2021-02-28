@@ -1,0 +1,75 @@
+
+* {
+  box-sizing: border-box;
+}
+
+.slider{
+	width: 60%;
+	margin: auto;
+}
+
+.examples {
+	width: 1000px;
+	margin: 0 auto;
+	font-family: Arial, sans-serif;
+	text-align: center;
+
+	&__block {
+
+		&__title {
+			font-size: 20px;
+		}
+
+		&__map {
+			display: inline-block;
+			width: 500px;
+			margin-top: -120px;
+
+			&--france {
+				width: 800px;
+
+				.svg-map__location {
+					&--heat-1 {
+						fill: lightgreen;
+					}
+					
+					&--heat0 {
+						fill: rgb(208, 255, 1);
+					}
+
+					&--heat1 {
+						fill: yellow;
+					}
+
+					&--heat2 {
+						fill: orange;
+					}
+
+					&--heat3 {
+						fill: rgb(255, 102, 0);
+					}
+					
+					&--heat4 {
+						fill: red;
+					}
+
+					&:focus,
+					&:hover {
+						opacity: 0.75;
+					}
+				}
+			}
+
+			&__tooltip {
+				position: fixed;
+				width: 200px;
+				padding: 10px;
+				border: 1px solid darkgray;
+				background-color: white;
+				&.dark{
+					background-color: #30364b;
+				}
+			}
+		}
+	}
+}

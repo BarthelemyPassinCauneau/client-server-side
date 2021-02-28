@@ -15,7 +15,7 @@ const compareFilter = (key, value) => {
             return filter
         }
     }
-    return { key: value }
+    return value
 }
 
 const filtering = (filters) => {
@@ -26,10 +26,8 @@ const filtering = (filters) => {
         const value = filters[key];
         if (value == parseInt(value)) {
             results[key] = parseInt(value)
-        } else if(value == parseFloat(value)) {
-            results[key] = parseFloat(value)
-        } else  {
-            if (compareKeywords.map(kw => kw.key).find(k => value.startsWith(k) != undefined)) {
+        } else {
+            if (compareKeywords.map(kw => kw.key).find(k => value.startsWith(k)) != undefined) {
                 results[key] = compareFilter(key, value)
             } else {
                 results[key] = value
